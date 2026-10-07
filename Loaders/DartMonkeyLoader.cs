@@ -331,6 +331,7 @@ public class DartMonkeyLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers
 		for (var i=0; i<count; i++) {
 			var v = (Il2CppAssets.Scripts.Models.Towers.Behaviors.CreateEffectOnPlaceModel)m[i+start];
 			v.effectModel = (Il2CppAssets.Scripts.Models.Effects.EffectModel) m[br.ReadInt32()];
+			v.createOnAirUnit = br.ReadBoolean();
 		}
 	}
 	
@@ -471,6 +472,7 @@ public class DartMonkeyLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers
 			v.startInCooldown = br.ReadBoolean();
 			customStartCooldownField.SetValue(v,br.ReadSingle().ToIl2Cpp());
 			v.animateOnMainAttack = br.ReadBoolean();
+			v.storeTargetOnAnimationStart = br.ReadBoolean();
 			v.isStunned = br.ReadBoolean();
 			v.modelName = br.ReadBoolean() ? null : br.ReadString();
 		}
@@ -714,6 +716,18 @@ public class DartMonkeyLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers
 			v.upper = br.ReadInt32();
 			v.displayModel = (Il2CppAssets.Scripts.Models.GenericBehaviors.DisplayModel) m[br.ReadInt32()];
 			v.distributeToChildren = br.ReadBoolean();
+		}
+	}
+	
+	private void Set_v_ParallelEmissionModel_Fields(int start, int count) {
+		Set_v_EmissionModel_Fields(start, count);
+		for (var i=0; i<count; i++) {
+			var v = (Il2CppAssets.Scripts.Models.Towers.Behaviors.Emissions.ParallelEmissionModel)m[i+start];
+			v.spreadLength = br.ReadSingle();
+			v.yOffset = br.ReadSingle();
+			v.count = br.ReadInt32();
+			v.linear = br.ReadBoolean();
+			v.offsetStart = br.ReadSingle();
 		}
 	}
 	
@@ -989,6 +1003,7 @@ public class DartMonkeyLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Behaviors.Attack.Behaviors.TargetStrongPrioCamoModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors.ShowTextOnHitModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Weapons.Behaviors.CritMultiplierModel>();
+				Create_Records<Il2CppAssets.Scripts.Models.Towers.Behaviors.Emissions.ParallelEmissionModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Behaviors.Abilities.AbilityModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Behaviors.Abilities.Behaviors.MonkeyFanClubModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Weapons.Behaviors.EjectEffectModel>();
@@ -1033,6 +1048,7 @@ public class DartMonkeyLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers
 				Set_v_TargetStrongPrioCamoModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_ShowTextOnHitModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_CritMultiplierModel_Fields(br.ReadInt32(), br.ReadInt32());
+				Set_v_ParallelEmissionModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_AbilityModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_MonkeyFanClubModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_EjectEffectModel_Fields(br.ReadInt32(), br.ReadInt32());

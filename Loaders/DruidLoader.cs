@@ -355,6 +355,7 @@ public class DruidLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.Towe
 		for (var i=0; i<count; i++) {
 			var v = (Il2CppAssets.Scripts.Models.Towers.Behaviors.CreateEffectOnPlaceModel)m[i+start];
 			v.effectModel = (Il2CppAssets.Scripts.Models.Effects.EffectModel) m[br.ReadInt32()];
+			v.createOnAirUnit = br.ReadBoolean();
 		}
 	}
 	
@@ -507,6 +508,7 @@ public class DruidLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.Towe
 			v.startInCooldown = br.ReadBoolean();
 			customStartCooldownField.SetValue(v,br.ReadSingle().ToIl2Cpp());
 			v.animateOnMainAttack = br.ReadBoolean();
+			v.storeTargetOnAnimationStart = br.ReadBoolean();
 			v.isStunned = br.ReadBoolean();
 			v.modelName = br.ReadBoolean() ? null : br.ReadString();
 		}
@@ -857,6 +859,8 @@ public class DruidLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.Towe
 			v.passOnCollidedWith = br.ReadBoolean();
 			v.dontCreateAtBloon = br.ReadBoolean();
 			v.passOnDirectionToContact = br.ReadBoolean();
+			v.useChance = br.ReadBoolean();
+			v.chance = br.ReadSingle();
 		}
 	}
 	
@@ -1447,6 +1451,7 @@ public class DruidLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.Towe
 			v.enablePercentChanceToFreeze = br.ReadBoolean();
 			v.damageModel = (Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors.DamageModel) m[br.ReadInt32()];
 			v.canFreezeMoabs = br.ReadBoolean();
+			v.bossImmunity = br.ReadBoolean();
 			v.cascadeMutators = br.ReadBoolean();
 			v.growBlockModel = (Il2CppAssets.Scripts.Models.Bloons.Behaviors.GrowBlockModel) m[br.ReadInt32()];
 			v.applyAfterDamage = br.ReadBoolean();

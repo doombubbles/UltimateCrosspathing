@@ -343,6 +343,7 @@ public class MonkeyBoostProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.To
 		for (var i=0; i<count; i++) {
 			var v = (Il2CppAssets.Scripts.Models.Towers.Behaviors.CreateEffectOnPlaceModel)m[i+start];
 			v.effectModel = (Il2CppAssets.Scripts.Models.Effects.EffectModel) m[br.ReadInt32()];
+			v.createOnAirUnit = br.ReadBoolean();
 		}
 	}
 	
@@ -635,6 +636,7 @@ public class MonkeyBoostProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.To
 			v.canAffectThisTower = br.ReadBoolean();
 			lifespanField.SetValue(v,br.ReadSingle().ToIl2Cpp());
 			v.filters = (Il2CppReferenceArray<Il2CppAssets.Scripts.Models.Towers.TowerFilters.TowerFilterModel>) m[br.ReadInt32()];
+			v.useTowerRange = br.ReadBoolean();
 		}
 	}
 	

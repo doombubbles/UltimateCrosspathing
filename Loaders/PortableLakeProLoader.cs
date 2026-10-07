@@ -18,15 +18,15 @@ using Il2CppNinjaKiwi.Common;
 using Il2CppAssets.Scripts.Simulation.SMath;
 
 public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.TowerModel> {
-
-	private const BindingFlags bindFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static;
-
+	
+	private const BindingFlags bindFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static; 
+	
 	private BinaryReader br = null;
 	// NOTE: was a collection per type but it prevented inheritance e.g list of Products would required class type id
 	protected override string BytesFileName => "PortableLakePros.bytes";
 	private int mIndex = 1; // first element is null
 	#region Read array
-
+	
 	private void LinkArray<T>() where T : Il2CppObjectBase {
 		var setCount = br.ReadInt32();
 		for (var i = 0; i < setCount; i++) {
@@ -172,37 +172,37 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 		}
 	}
 	#endregion
-
+	
 	#region Read object records
-
+	
 	private void CreateArraySet<T>() where T : Il2CppObjectBase {
 		var arrCount = br.ReadInt32();
 		for(var i = 0; i < arrCount; i++) {
 			m[mIndex++] = new Il2CppReferenceArray<T>(br.ReadInt32());;
 		}
 	}
-
+	
 	private void CreateListSet<T>() where T : Il2CppObjectBase {
 		var arrCount = br.ReadInt32();
 		for (var i = 0; i < arrCount; i++) {
 			m[mIndex++] = new List<T>(br.ReadInt32()); // set capacity
 		}
 	}
-
+	
 	private void CreateDictionarySet<K, T>() {
 		var arrCount = br.ReadInt32();
 		for (var i = 0; i < arrCount; i++) {
 			m[mIndex++] = new Dictionary<K, T>(br.ReadInt32());// set capacity
 		}
 	}
-
+	
 	private void CreateSerializableDictionarySet<K, T>() {
 		var arrCount = br.ReadInt32();
 		for (var i = 0; i < arrCount; i++) {
 			m[mIndex++] = new SerializableDictionary<K, T>(br.ReadInt32());// set capacity
 		}
 	}
-
+	
 	private void Create_Records<T>() where T : Il2CppObjectBase {
 		var count = br.ReadInt32();
 		var t = Il2CppType.Of<T>();
@@ -211,9 +211,9 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 		}
 	}
 	#endregion
-
+	
 	#region Link object records
-
+	
 	private void Set_v_EntityModel_Fields(int start, int count) {
 		Set_v_Model_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -224,7 +224,7 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 			v.radius = br.ReadSingle();
 		}
 	}
-
+	
 	private void Set_v_Model_Fields(int start, int count) {
 		var t = Il2CppType.Of<Il2CppAssets.Scripts.Models.Model>();
 		var runtimeTypeIndexField = t.GetField("runtimeTypeIndex", bindFlags);
@@ -239,7 +239,7 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 			_nameField.SetValue(v,br.ReadBoolean() ? null : string.Intern(br.ReadString()));
 		}
 	}
-
+	
 	private void Set_v_TowerModel_Fields(int start, int count) {
 		Set_v_EntityModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -299,7 +299,7 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 			v.frontierId = br.ReadInt32();
 		}
 	}
-
+	
 	private void Set_v_FootprintModel_Fields(int start, int count) {
 		Set_v_TowerBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -309,21 +309,21 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 			v.ignoresTowerOverlap = br.ReadBoolean();
 		}
 	}
-
+	
 	private void Set_v_TowerBehaviorModel_Fields(int start, int count) {
 		Set_v_EntityBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
 			var v = (Il2CppAssets.Scripts.Models.Towers.TowerBehaviorModel)m[i+start];
 		}
 	}
-
+	
 	private void Set_v_EntityBehaviorModel_Fields(int start, int count) {
 		Set_v_Model_Fields(start, count);
 		for (var i=0; i<count; i++) {
 			var v = (Il2CppAssets.Scripts.Models.EntityBehaviorModel)m[i+start];
 		}
 	}
-
+	
 	private void Set_v_RectangleFootprintModel_Fields(int start, int count) {
 		Set_v_FootprintModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -332,7 +332,7 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 			v.yWidth = br.ReadSingle();
 		}
 	}
-
+	
 	private void Set_v_UpgradePathModel_Fields(int start, int count) {
 		Set_v_Model_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -341,7 +341,7 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 			v.upgrade = br.ReadBoolean() ? null : br.ReadString();
 		}
 	}
-
+	
 	private void Set_v_CreateSoundOnSellModel_Fields(int start, int count) {
 		Set_v_TowerBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -349,7 +349,7 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 			v.sound = (Il2CppAssets.Scripts.Models.Audio.SoundModel) m[br.ReadInt32()];
 		}
 	}
-
+	
 	private void Set_v_SoundModel_Fields(int start, int count) {
 		Set_v_Model_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -357,7 +357,7 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 			v.assetId = ModContent.CreateAudioClipReference(br.ReadString());
 		}
 	}
-
+	
 	private void Set_v_PowerProTowerModel_Fields(int start, int count) {
 		Set_v_TowerBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -365,7 +365,7 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 			v.powerId = br.ReadBoolean() ? null : br.ReadString();
 		}
 	}
-
+	
 	private void Set_v_CreateSoundOnUpgradeModel_Fields(int start, int count) {
 		Set_v_TowerBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -381,7 +381,7 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 			v.sound8 = (Il2CppAssets.Scripts.Models.Audio.SoundModel) m[br.ReadInt32()];
 		}
 	}
-
+	
 	private void Set_v_CreateSoundOnTowerPlaceModel_Fields(int start, int count) {
 		Set_v_TowerBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -407,7 +407,7 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 			v.reactDelay = br.ReadSingle();
 		}
 	}
-
+	
 	private void Set_v_CreateEffectOnUpgradeModel_Fields(int start, int count) {
 		Set_v_TowerBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -416,7 +416,7 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 			v.createOnAirUnit = br.ReadBoolean();
 		}
 	}
-
+	
 	private void Set_v_EffectModel_Fields(int start, int count) {
 		Set_v_Model_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -433,7 +433,7 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 			v.useRoundTime = br.ReadBoolean();
 		}
 	}
-
+	
 	private void Set_v_CreateEffectOnSellModel_Fields(int start, int count) {
 		Set_v_TowerBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -441,22 +441,23 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 			v.effectModel = (Il2CppAssets.Scripts.Models.Effects.EffectModel) m[br.ReadInt32()];
 		}
 	}
-
+	
 	private void Set_v_CreateEffectOnPlaceModel_Fields(int start, int count) {
 		Set_v_TowerBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
 			var v = (Il2CppAssets.Scripts.Models.Towers.Behaviors.CreateEffectOnPlaceModel)m[i+start];
 			v.effectModel = (Il2CppAssets.Scripts.Models.Effects.EffectModel) m[br.ReadInt32()];
+			v.createOnAirUnit = br.ReadBoolean();
 		}
 	}
-
+	
 	private void Set_v_IgnoreAllMutatorsTowerModel_Fields(int start, int count) {
 		Set_v_TowerBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
 			var v = (Il2CppAssets.Scripts.Models.Towers.Behaviors.IgnoreAllMutatorsTowerModel)m[i+start];
 		}
 	}
-
+	
 	private void Set_v_PlayAnimationIndexModel_Fields(int start, int count) {
 		Set_v_TowerBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -465,7 +466,7 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 			v.upgradeAnimation = br.ReadInt32();
 		}
 	}
-
+	
 	private void Set_v_AddMakeshiftAreaModel_Fields(int start, int count) {
 		Set_v_TowerBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -483,7 +484,7 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 			v.prohibitTrackPlacement = br.ReadBoolean();
 		}
 	}
-
+	
 	private void Set_v_MakeshiftAreaSupportModel_Fields(int start, int count) {
 		Set_v_TowerBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -497,7 +498,7 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 			v.filters = (Il2CppReferenceArray<Il2CppAssets.Scripts.Models.Towers.TowerFilters.TowerFilterModel>) m[br.ReadInt32()];
 		}
 	}
-
+	
 	private void Set_v_MakeshiftAreaRangeSupportModel_Fields(int start, int count) {
 		Set_v_MakeshiftAreaSupportModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -505,14 +506,14 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 			v.rangeMultiplier = br.ReadSingle();
 		}
 	}
-
+	
 	private void Set_v_TowerFilterModel_Fields(int start, int count) {
 		Set_v_Model_Fields(start, count);
 		for (var i=0; i<count; i++) {
 			var v = (Il2CppAssets.Scripts.Models.Towers.TowerFilters.TowerFilterModel)m[i+start];
 		}
 	}
-
+	
 	private void Set_v_FilterTowerByPlaceableAreaModel_Fields(int start, int count) {
 		Set_v_TowerFilterModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -521,7 +522,7 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 			v.exclusive = br.ReadBoolean();
 		}
 	}
-
+	
 	private void Set_v_BuffIndicatorModel_Fields(int start, int count) {
 		Set_v_TowerBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -535,7 +536,7 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 			v.dontShowX = br.ReadBoolean();
 		}
 	}
-
+	
 	private void Set_v_MakeshiftAreaFootprintSupportModel_Fields(int start, int count) {
 		Set_v_MakeshiftAreaSupportModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -543,7 +544,7 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 			v.sizeMultiplier = br.ReadSingle();
 		}
 	}
-
+	
 	private void Set_v_MakeshiftAreaTowerDisplayModel_Fields(int start, int count) {
 		Set_v_MakeshiftAreaSupportModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -552,7 +553,7 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 			v.towerPositionHeightOffset = br.ReadSingle();
 		}
 	}
-
+	
 	private void Set_v_DisplayModel_Fields(int start, int count) {
 		Set_v_Model_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -568,7 +569,7 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 			v.isAnimationPaused = br.ReadBoolean();
 		}
 	}
-
+	
 	private void Set_v_BonusLivesPerRoundModel_Fields(int start, int count) {
 		Set_v_TowerBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -578,7 +579,7 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 			v.assetId = ModContent.CreatePrefabReference(br.ReadString());
 		}
 	}
-
+	
 	private void Set_v_MakeshiftAreaAcidicMixtureSupportModel_Fields(int start, int count) {
 		Set_v_MakeshiftAreaSupportModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -590,21 +591,21 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 			v.refreshCooldown = br.ReadSingle();
 		}
 	}
-
+	
 	private void Set_v_WeaponBehaviorModel_Fields(int start, int count) {
 		Set_v_EntityBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
 			var v = (Il2CppAssets.Scripts.Models.Towers.Weapons.WeaponBehaviorModel)m[i+start];
 		}
 	}
-
+	
 	private void Set_v_AcidicMixtureModel_Fields(int start, int count) {
 		Set_v_WeaponBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
 			var v = (Il2CppAssets.Scripts.Models.Towers.Weapons.Behaviors.AcidicMixtureModel)m[i+start];
 		}
 	}
-
+	
 	private void Set_v_AcidicMixtureCheckModel_Fields(int start, int count) {
 		Set_v_TowerBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -613,7 +614,7 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 			v.mutationId = br.ReadBoolean() ? null : br.ReadString();
 		}
 	}
-
+	
 	private void Set_v_CreateSoundOnAttachedModel_Fields(int start, int count) {
 		Set_v_TowerBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -622,7 +623,7 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 			v.altSound = (Il2CppAssets.Scripts.Models.Audio.SoundModel) m[br.ReadInt32()];
 		}
 	}
-
+	
 	private void Set_v_AttackModel_Fields(int start, int count) {
 		Set_v_TowerBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -644,7 +645,7 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 			v.fixedRange = br.ReadBoolean();
 		}
 	}
-
+	
 	private void Set_v_WeaponModel_Fields(int start, int count) {
 		Set_v_Model_Fields(start, count);
 		var t = Il2CppType.Of<Il2CppAssets.Scripts.Models.Towers.Weapons.WeaponModel>();
@@ -668,11 +669,12 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 			v.startInCooldown = br.ReadBoolean();
 			customStartCooldownField.SetValue(v,br.ReadSingle().ToIl2Cpp());
 			v.animateOnMainAttack = br.ReadBoolean();
+			v.storeTargetOnAnimationStart = br.ReadBoolean();
 			v.isStunned = br.ReadBoolean();
 			v.modelName = br.ReadBoolean() ? null : br.ReadString();
 		}
 	}
-
+	
 	private void Set_v_EmissionModel_Fields(int start, int count) {
 		Set_v_Model_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -680,14 +682,14 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 			v.behaviors = (Il2CppReferenceArray<Il2CppAssets.Scripts.Models.Towers.Behaviors.Emissions.EmissionBehaviorModel>) m[br.ReadInt32()];
 		}
 	}
-
+	
 	private void Set_v_SingleEmissionAtTowerModel_Fields(int start, int count) {
 		Set_v_EmissionModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
 			var v = (Il2CppAssets.Scripts.Models.Towers.Behaviors.Emissions.SingleEmissionAtTowerModel)m[i+start];
 		}
 	}
-
+	
 	private void Set_v_ProjectileModel_Fields(int start, int count) {
 		Set_v_Model_Fields(start, count);
 		var t = Il2CppType.Of<Il2CppAssets.Scripts.Models.Towers.Projectiles.ProjectileModel>();
@@ -718,14 +720,14 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 			v.cantCreateSubProjectiles = br.ReadBoolean();
 		}
 	}
-
+	
 	private void Set_v_FilterModel_Fields(int start, int count) {
 		Set_v_Model_Fields(start, count);
 		for (var i=0; i<count; i++) {
 			var v = (Il2CppAssets.Scripts.Models.Towers.Filters.FilterModel)m[i+start];
 		}
 	}
-
+	
 	private void Set_v_FilterInvisibleModel_Fields(int start, int count) {
 		Set_v_FilterModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -734,7 +736,7 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 			v.ignoreBroadPhase = br.ReadBoolean();
 		}
 	}
-
+	
 	private void Set_v_FilterMoabModel_Fields(int start, int count) {
 		Set_v_FilterModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -742,7 +744,7 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 			v.flip = br.ReadBoolean();
 		}
 	}
-
+	
 	private void Set_v_ProjectileBehaviorModel_Fields(int start, int count) {
 		Set_v_EntityBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -750,7 +752,7 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 			v.collisionPass = br.ReadInt32();
 		}
 	}
-
+	
 	private void Set_v_AgeModel_Fields(int start, int count) {
 		Set_v_ProjectileBehaviorModel_Fields(start, count);
 		var t = Il2CppType.Of<Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors.AgeModel>();
@@ -763,7 +765,7 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 			v.endOfRoundClearBypassModel = (Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors.EndOfRoundClearBypassModel) m[br.ReadInt32()];
 		}
 	}
-
+	
 	private void Set_v_ProjectileFilterModel_Fields(int start, int count) {
 		Set_v_ProjectileBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -771,7 +773,7 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 			v.filters = (Il2CppReferenceArray<Il2CppAssets.Scripts.Models.Towers.Filters.FilterModel>) m[br.ReadInt32()];
 		}
 	}
-
+	
 	private void Set_v_ProjectileBehaviorWithOverlayModel_Fields(int start, int count) {
 		Set_v_ProjectileBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -779,7 +781,7 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 			v.overlayType = br.ReadBoolean() ? null : br.ReadString();
 		}
 	}
-
+	
 	private void Set_v_SlowModel_Fields(int start, int count) {
 		Set_v_ProjectileBehaviorWithOverlayModel_Fields(start, count);
 		var t = Il2CppType.Of<Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors.SlowModel>();
@@ -804,7 +806,7 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 			v.dontRemoveOnBloonDegrade = br.ReadBoolean();
 		}
 	}
-
+	
 	private void Set_v_EjectEffectModel_Fields(int start, int count) {
 		Set_v_WeaponBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -818,14 +820,14 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 			v.useMainAttackRotation = br.ReadBoolean();
 		}
 	}
-
+	
 	private void Set_v_AttackBehaviorModel_Fields(int start, int count) {
 		Set_v_EntityBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
 			var v = (Il2CppAssets.Scripts.Models.Towers.Behaviors.Attack.AttackBehaviorModel)m[i+start];
 		}
 	}
-
+	
 	private void Set_v_AttackFilterModel_Fields(int start, int count) {
 		Set_v_AttackBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -833,7 +835,7 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 			v.filters = (Il2CppReferenceArray<Il2CppAssets.Scripts.Models.Towers.Filters.FilterModel>) m[br.ReadInt32()];
 		}
 	}
-
+	
 	private void Set_v_TargetSupplierModel_Fields(int start, int count) {
 		Set_v_AttackBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -841,7 +843,7 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 			v.isOnSubTower = br.ReadBoolean();
 		}
 	}
-
+	
 	private void Set_v_TargetFirstModel_Fields(int start, int count) {
 		Set_v_TargetSupplierModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -849,21 +851,21 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 			v.isSelectable = br.ReadBoolean();
 		}
 	}
-
+	
 	private void Set_v_SingleEmissionModel_Fields(int start, int count) {
 		Set_v_EmissionModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
 			var v = (Il2CppAssets.Scripts.Models.Towers.Behaviors.Emissions.SingleEmissionModel)m[i+start];
 		}
 	}
-
+	
 	private void Set_v_EmissionBehaviorModel_Fields(int start, int count) {
 		Set_v_Model_Fields(start, count);
 		for (var i=0; i<count; i++) {
 			var v = (Il2CppAssets.Scripts.Models.Towers.Behaviors.Emissions.EmissionBehaviorModel)m[i+start];
 		}
 	}
-
+	
 	private void Set_v_EmissionRotationOffDisplayModel_Fields(int start, int count) {
 		Set_v_EmissionBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -871,14 +873,14 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 			v.offsetRotation = br.ReadInt32();
 		}
 	}
-
+	
 	private void Set_v_FilterAllModel_Fields(int start, int count) {
 		Set_v_FilterModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
 			var v = (Il2CppAssets.Scripts.Models.Towers.Filters.FilterAllModel)m[i+start];
 		}
 	}
-
+	
 	private void Set_v_InstantModel_Fields(int start, int count) {
 		Set_v_ProjectileBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -888,7 +890,7 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 			v.dontFollowTarget = br.ReadBoolean();
 		}
 	}
-
+	
 	private void Set_v_CreateProjectileOnIntervalModel_Fields(int start, int count) {
 		Set_v_ProjectileBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -906,7 +908,7 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 			v.effect = (Il2CppAssets.Scripts.Models.Effects.EffectModel) m[br.ReadInt32()];
 		}
 	}
-
+	
 	private void Set_v_DamageModel_Fields(int start, int count) {
 		Set_v_ProjectileBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -922,14 +924,14 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 			v.ignoreDamageMultipliers = br.ReadBoolean();
 		}
 	}
-
+	
 	private void Set_v_DamageModifierModel_Fields(int start, int count) {
 		Set_v_ProjectileBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
 			var v = (Il2CppAssets.Scripts.Models.Towers.Projectiles.DamageModifierModel)m[i+start];
 		}
 	}
-
+	
 	private void Set_v_DamageModifierForTagModel_Fields(int start, int count) {
 		Set_v_DamageModifierModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -943,14 +945,14 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 			v.ignoreTag = br.ReadBoolean();
 		}
 	}
-
+	
 	private void Set_v_WeaponRateAnimationSpeedModel_Fields(int start, int count) {
 		Set_v_ProjectileBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
 			var v = (Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors.WeaponRateAnimationSpeedModel)m[i+start];
 		}
 	}
-
+	
 	private void Set_v_FilterTargetAngleModel_Fields(int start, int count) {
 		Set_v_FilterModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -960,7 +962,7 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 			v.ignoreTowerRotation = br.ReadBoolean();
 		}
 	}
-
+	
 	private void Set_v_RotateToTargetModel_Fields(int start, int count) {
 		Set_v_AttackBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -973,7 +975,7 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 			v.useMainAttackRotation = br.ReadBoolean();
 		}
 	}
-
+	
 	private void Set_v_RotateToTargetAttackOffsetModel_Fields(int start, int count) {
 		Set_v_RotateToTargetModel_Fields(start, count);
 		var t = Il2CppType.Of<Il2CppAssets.Scripts.Models.Towers.Behaviors.Attack.Behaviors.RotateToTargetAttackOffsetModel>();
@@ -985,7 +987,7 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 			v.alwaysIgnoreParentRotation = br.ReadBoolean();
 		}
 	}
-
+	
 	private void Set_v_TargetLastModel_Fields(int start, int count) {
 		Set_v_TargetSupplierModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -993,7 +995,7 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 			v.isSelectable = br.ReadBoolean();
 		}
 	}
-
+	
 	private void Set_v_TargetCloseModel_Fields(int start, int count) {
 		Set_v_TargetSupplierModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -1001,7 +1003,7 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 			v.isSelectable = br.ReadBoolean();
 		}
 	}
-
+	
 	private void Set_v_TargetStrongModel_Fields(int start, int count) {
 		Set_v_TargetSupplierModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -1009,7 +1011,7 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 			v.isSelectable = br.ReadBoolean();
 		}
 	}
-
+	
 	private void Set_v_FilterOutBloonModel_Fields(int start, int count) {
 		Set_v_FilterModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -1017,7 +1019,7 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 			v.bloonId = br.ReadBoolean() ? null : br.ReadString();
 		}
 	}
-
+	
 	private void Set_v_KnockBloonOutOfBoundsModel_Fields(int start, int count) {
 		Set_v_ProjectileBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -1026,7 +1028,27 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 			v.bloonSpinSpeed = br.ReadSingle();
 		}
 	}
-
+	
+	private void Set_v_CreateSoundOnProjectileCreatedModel_Fields(int start, int count) {
+		Set_v_WeaponBehaviorModel_Fields(start, count);
+		for (var i=0; i<count; i++) {
+			var v = (Il2CppAssets.Scripts.Models.Towers.Weapons.Behaviors.CreateSoundOnProjectileCreatedModel)m[i+start];
+			v.sound1 = (Il2CppAssets.Scripts.Models.Audio.SoundModel) m[br.ReadInt32()];
+			v.sound2 = (Il2CppAssets.Scripts.Models.Audio.SoundModel) m[br.ReadInt32()];
+			v.sound3 = (Il2CppAssets.Scripts.Models.Audio.SoundModel) m[br.ReadInt32()];
+			v.sound4 = (Il2CppAssets.Scripts.Models.Audio.SoundModel) m[br.ReadInt32()];
+			v.sound5 = (Il2CppAssets.Scripts.Models.Audio.SoundModel) m[br.ReadInt32()];
+			v.altSound1 = (Il2CppAssets.Scripts.Models.Audio.SoundModel) m[br.ReadInt32()];
+			v.altSound2 = (Il2CppAssets.Scripts.Models.Audio.SoundModel) m[br.ReadInt32()];
+			v.altSound3 = (Il2CppAssets.Scripts.Models.Audio.SoundModel) m[br.ReadInt32()];
+			v.altSound4 = (Il2CppAssets.Scripts.Models.Audio.SoundModel) m[br.ReadInt32()];
+			v.altSound5 = (Il2CppAssets.Scripts.Models.Audio.SoundModel) m[br.ReadInt32()];
+			v.type = br.ReadBoolean() ? null : br.ReadString();
+			v.altType = br.ReadBoolean() ? null : br.ReadString();
+			v.projectileId = br.ReadBoolean() ? null : br.ReadString();
+		}
+	}
+	
 	private void Set_v_CashPerTowerInMakeshiftAreaModel_Fields(int start, int count) {
 		Set_v_TowerBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -1036,7 +1058,7 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 			v.assetLifespan = br.ReadSingle();
 		}
 	}
-
+	
 	private void Set_v_RemoveBloonModifiersModel_Fields(int start, int count) {
 		Set_v_ProjectileBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -1050,14 +1072,14 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 			v.bloonTagExplicitList = (Il2CppStringArray) m[br.ReadInt32()];
 		}
 	}
-
+	
 	private void Set_v_IgnoreThrowMarkerModel_Fields(int start, int count) {
 		Set_v_WeaponBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
 			var v = (Il2CppAssets.Scripts.Models.Towers.Weapons.Behaviors.IgnoreThrowMarkerModel)m[i+start];
 		}
 	}
-
+	
 	private void Set_v_WeaponRateMinModel_Fields(int start, int count) {
 		Set_v_WeaponBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -1065,7 +1087,7 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 			v.min = br.ReadSingle();
 		}
 	}
-
+	
 	private void Set_v_FollowTouchSettingModel_Fields(int start, int count) {
 		Set_v_TargetSupplierModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -1073,7 +1095,7 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 			v.isSelectable = br.ReadBoolean();
 		}
 	}
-
+	
 	private void Set_v_LockInPlaceSettingModel_Fields(int start, int count) {
 		Set_v_TargetSupplierModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -1082,7 +1104,7 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 			v.display = ModContent.CreatePrefabReference(br.ReadString());
 		}
 	}
-
+	
 	private void Set_v_PatrolPointsSettingModel_Fields(int start, int count) {
 		Set_v_TargetSupplierModel_Fields(start, count);
 		var t = Il2CppType.Of<Il2CppAssets.Scripts.Models.Towers.Behaviors.Attack.Behaviors.PatrolPointsSettingModel>();
@@ -1101,14 +1123,14 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 			lineDelayField.SetValue(v,br.ReadSingle().ToIl2Cpp());
 		}
 	}
-
+	
 	private void Set_v_RotateToTargetAirUnitModel_Fields(int start, int count) {
 		Set_v_RotateToTargetModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
 			var v = (Il2CppAssets.Scripts.Models.Towers.Behaviors.Attack.Behaviors.RotateToTargetAirUnitModel)m[i+start];
 		}
 	}
-
+	
 	private void Set_v_PursuitSettingModel_Fields(int start, int count) {
 		Set_v_TargetSupplierModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -1117,7 +1139,7 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 			v.pursuitDistance = br.ReadSingle();
 		}
 	}
-
+	
 	private void Set_v_AirUnitModel_Fields(int start, int count) {
 		Set_v_TowerBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -1129,9 +1151,10 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 			v.selectableRadius = br.ReadSingle();
 			v.blocksPlacement = br.ReadBoolean();
 			v.blockingRadius = br.ReadSingle();
+			v.delayedReveal = br.ReadSingle();
 		}
 	}
-
+	
 	private void Set_v_HeliMovementModel_Fields(int start, int count) {
 		Set_v_TowerBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -1157,7 +1180,7 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 			v.patrolPursuitRadius = br.ReadSingle();
 		}
 	}
-
+	
 	private void Set_v_AbilityModel_Fields(int start, int count) {
 		Set_v_TowerBehaviorModel_Fields(start, count);
 		var t = Il2CppType.Of<Il2CppAssets.Scripts.Models.Towers.Behaviors.Abilities.AbilityModel>();
@@ -1198,14 +1221,14 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 			cooldownField.SetValue(v,br.ReadSingle().ToIl2Cpp());
 		}
 	}
-
+	
 	private void Set_v_AbilityBehaviorModel_Fields(int start, int count) {
 		Set_v_EntityBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
 			var v = (Il2CppAssets.Scripts.Models.Towers.Behaviors.Abilities.AbilityBehaviorModel)m[i+start];
 		}
 	}
-
+	
 	private void Set_v_DoorGunnerModel_Fields(int start, int count) {
 		Set_v_AbilityBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -1216,27 +1239,29 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 			v.pickupSound = (Il2CppAssets.Scripts.Models.Audio.SoundModel) m[br.ReadInt32()];
 			v.dontHideTower = br.ReadBoolean();
 			v.messageLocKey = br.ReadBoolean() ? null : br.ReadString();
+			v.deniedMessageLocKey = br.ReadBoolean() ? null : br.ReadString();
 		}
 	}
-
+	
 	private void Set_v_DeployModel_Fields(int start, int count) {
 		Set_v_AbilityBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
 			var v = (Il2CppAssets.Scripts.Models.Towers.Behaviors.Abilities.Behaviors.DeployModel)m[i+start];
 			v.activateSound = (Il2CppAssets.Scripts.Models.Audio.SoundModel) m[br.ReadInt32()];
 			v.dropOffSound = (Il2CppAssets.Scripts.Models.Audio.SoundModel) m[br.ReadInt32()];
+			v.helperMessage = br.ReadBoolean() ? null : br.ReadString();
 		}
 	}
-
+	
 	#endregion
-
+	
 	protected override Il2CppAssets.Scripts.Models.Towers.TowerModel Load(byte[] bytes) {
 		using (var s = new MemoryStream(bytes)) {
 			using (var reader = new BinaryReader(s)) {
 				this.br = reader;
 				var totalCount = br.ReadInt32();
 				m = new object[totalCount];
-
+				
 				//##  Step 1: create empty collections
 				Read_a_AreaType_Array();
 				CreateArraySet<Il2CppAssets.Scripts.Models.Model>();
@@ -1253,7 +1278,7 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 				CreateArraySet<Il2CppAssets.Scripts.Models.Towers.Behaviors.Emissions.EmissionBehaviorModel>();
 				CreateArraySet<Il2CppAssets.Scripts.Models.Towers.TowerBehaviorModel>();
 				CreateListSet<Il2CppAssets.Scripts.Models.Model>();
-
+				
 				//##  Step 2: create empty objects
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.TowerModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Behaviors.RectangleFootprintModel>();
@@ -1308,6 +1333,7 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Behaviors.Attack.Behaviors.TargetStrongModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Filters.FilterOutBloonModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors.KnockBloonOutOfBoundsModel>();
+				Create_Records<Il2CppAssets.Scripts.Models.Towers.Weapons.Behaviors.CreateSoundOnProjectileCreatedModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Behaviors.CashPerTowerInMakeshiftAreaModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors.RemoveBloonModifiersModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Weapons.Behaviors.IgnoreThrowMarkerModel>();
@@ -1322,7 +1348,7 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Behaviors.Abilities.AbilityModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Behaviors.Abilities.Behaviors.DoorGunnerModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Behaviors.Abilities.Behaviors.DeployModel>();
-
+				
 				Set_v_TowerModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_RectangleFootprintModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_UpgradePathModel_Fields(br.ReadInt32(), br.ReadInt32());
@@ -1376,6 +1402,7 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 				Set_v_TargetStrongModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_FilterOutBloonModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_KnockBloonOutOfBoundsModel_Fields(br.ReadInt32(), br.ReadInt32());
+				Set_v_CreateSoundOnProjectileCreatedModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_CashPerTowerInMakeshiftAreaModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_RemoveBloonModifiersModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_IgnoreThrowMarkerModel_Fields(br.ReadInt32(), br.ReadInt32());
@@ -1390,7 +1417,7 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 				Set_v_AbilityModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_DoorGunnerModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_DeployModel_Fields(br.ReadInt32(), br.ReadInt32());
-
+				
 				//##  Step 4: link object collections e.g Product[]. Note: requires object data e.g dictionary<string, value> where string = model.name
 				LinkArray<Il2CppAssets.Scripts.Models.Model>();
 				LinkArray<Il2CppAssets.Scripts.Models.Towers.Mods.ApplyModModel>();
@@ -1401,7 +1428,7 @@ public class PortableLakeProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 				LinkArray<Il2CppAssets.Scripts.Models.Towers.Behaviors.Emissions.EmissionBehaviorModel>();
 				LinkArray<Il2CppAssets.Scripts.Models.Towers.TowerBehaviorModel>();
 				LinkList<Il2CppAssets.Scripts.Models.Model>();
-
+				
 				var resIndex = br.ReadInt32();
 				UnityEngine.Debug.Assert(br.BaseStream.Position == br.BaseStream.Length);
 				return (Il2CppAssets.Scripts.Models.Towers.TowerModel) m[resIndex];

@@ -439,6 +439,7 @@ public class MonkeyVillageLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Tow
 		for (var i=0; i<count; i++) {
 			var v = (Il2CppAssets.Scripts.Models.Towers.Behaviors.CreateEffectOnPlaceModel)m[i+start];
 			v.effectModel = (Il2CppAssets.Scripts.Models.Effects.EffectModel) m[br.ReadInt32()];
+			v.createOnAirUnit = br.ReadBoolean();
 		}
 	}
 	
@@ -530,6 +531,7 @@ public class MonkeyVillageLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Tow
 			v.mutatorId = br.ReadBoolean() ? null : br.ReadString();
 			v.isUnique = br.ReadBoolean();
 			v.maxStacks = br.ReadInt32();
+			v.excludeAddToSubtower = br.ReadBoolean();
 		}
 	}
 	
@@ -761,6 +763,7 @@ public class MonkeyVillageLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Tow
 			v.startInCooldown = br.ReadBoolean();
 			customStartCooldownField.SetValue(v,br.ReadSingle().ToIl2Cpp());
 			v.animateOnMainAttack = br.ReadBoolean();
+			v.storeTargetOnAnimationStart = br.ReadBoolean();
 			v.isStunned = br.ReadBoolean();
 			v.modelName = br.ReadBoolean() ? null : br.ReadString();
 		}
@@ -920,6 +923,7 @@ public class MonkeyVillageLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Tow
 			v.rotateToTarget = br.ReadBoolean();
 			v.maxTurnAngle = br.ReadSingle();
 			v.positionAboveMoabTypes = br.ReadBoolean();
+			v.animCurve = (UnityEngine.AnimationCurve) m[br.ReadInt32()];
 		}
 	}
 	
@@ -1042,6 +1046,7 @@ public class MonkeyVillageLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Tow
 			v.useRadius = br.ReadBoolean();
 			v.buffLocsName = br.ReadBoolean() ? null : br.ReadString();
 			v.buffIconName = br.ReadBoolean() ? null : br.ReadString();
+			v.mutatorId = br.ReadBoolean() ? null : br.ReadString();
 			lifespanField.SetValue(v,br.ReadSingle().ToIl2Cpp());
 		}
 	}

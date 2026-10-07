@@ -371,6 +371,7 @@ public class AlchemistLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 		for (var i=0; i<count; i++) {
 			var v = (Il2CppAssets.Scripts.Models.Towers.Behaviors.CreateEffectOnPlaceModel)m[i+start];
 			v.effectModel = (Il2CppAssets.Scripts.Models.Effects.EffectModel) m[br.ReadInt32()];
+			v.createOnAirUnit = br.ReadBoolean();
 		}
 	}
 	
@@ -544,6 +545,7 @@ public class AlchemistLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.startInCooldown = br.ReadBoolean();
 			customStartCooldownField.SetValue(v,br.ReadSingle().ToIl2Cpp());
 			v.animateOnMainAttack = br.ReadBoolean();
+			v.storeTargetOnAnimationStart = br.ReadBoolean();
 			v.isStunned = br.ReadBoolean();
 			v.modelName = br.ReadBoolean() ? null : br.ReadString();
 		}
@@ -766,46 +768,6 @@ public class AlchemistLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 		}
 	}
 	
-	private void Set_v_IncreaseBloonWorthModel_Fields(int start, int count) {
-		Set_v_ProjectileBehaviorWithOverlayModel_Fields(start, count);
-		var t = Il2CppType.Of<Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors.IncreaseBloonWorthModel>();
-		var durationField = t.GetField("duration", bindFlags);
-		for (var i=0; i<count; i++) {
-			var v = (Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors.IncreaseBloonWorthModel)m[i+start];
-			v.mutatorId = br.ReadBoolean() ? null : br.ReadString();
-			v.cash = br.ReadSingle();
-			v.cashMultiplier = br.ReadSingle();
-			v.filter = (Il2CppAssets.Scripts.Models.Towers.Filters.FilterModel) m[br.ReadInt32()];
-			v.charges = br.ReadInt32();
-			v.bloonPropertiesToRemove = (BloonProperties) (br.ReadInt32());
-			durationField.SetValue(v,br.ReadSingle().ToIl2Cpp());
-		}
-	}
-	
-	private void Set_v_FilterWithTagModel_Fields(int start, int count) {
-		Set_v_FilterModel_Fields(start, count);
-		for (var i=0; i<count; i++) {
-			var v = (Il2CppAssets.Scripts.Models.Towers.Filters.FilterWithTagModel)m[i+start];
-			v.moabTag = br.ReadBoolean();
-			v.camoTag = br.ReadBoolean();
-			v.growTag = br.ReadBoolean();
-			v.fortifiedTag = br.ReadBoolean();
-			v.tag = br.ReadBoolean() ? null : br.ReadString();
-			v.inclusive = br.ReadBoolean();
-			v.hasMoabTag = br.ReadBoolean();
-		}
-	}
-	
-	private void Set_v_IncreaseWorthTextEffectModel_Fields(int start, int count) {
-		Set_v_BloonBehaviorModel_Fields(start, count);
-		for (var i=0; i<count; i++) {
-			var v = (Il2CppAssets.Scripts.Models.Bloons.Behaviors.IncreaseWorthTextEffectModel)m[i+start];
-			v.assetId = ModContent.CreatePrefabReference(br.ReadString());
-			v.lifespan = br.ReadSingle();
-			v.displayFullPayout = br.ReadBoolean();
-		}
-	}
-	
 	private void Set_v_RemoveBloonModifiersModel_Fields(int start, int count) {
 		Set_v_ProjectileBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -844,6 +806,32 @@ public class AlchemistLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.useRoundTime = br.ReadBoolean();
 			lifespanField.SetValue(v,br.ReadSingle().ToIl2Cpp());
 			v.endOfRoundClearBypassModel = (Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors.EndOfRoundClearBypassModel) m[br.ReadInt32()];
+		}
+	}
+	
+	private void Set_v_FilterWithTagModel_Fields(int start, int count) {
+		Set_v_FilterModel_Fields(start, count);
+		for (var i=0; i<count; i++) {
+			var v = (Il2CppAssets.Scripts.Models.Towers.Filters.FilterWithTagModel)m[i+start];
+			v.moabTag = br.ReadBoolean();
+			v.camoTag = br.ReadBoolean();
+			v.growTag = br.ReadBoolean();
+			v.fortifiedTag = br.ReadBoolean();
+			v.tag = br.ReadBoolean() ? null : br.ReadString();
+			v.inclusive = br.ReadBoolean();
+			v.hasMoabTag = br.ReadBoolean();
+		}
+	}
+	
+	private void Set_v_GiveCashOnPopModel_Fields(int start, int count) {
+		Set_v_BloonBehaviorModelWithTowerTracking_Fields(start, count);
+		for (var i=0; i<count; i++) {
+			var v = (Il2CppAssets.Scripts.Models.Bloons.Behaviors.GiveCashOnPopModel)m[i+start];
+			v.flatCashAmount = br.ReadSingle();
+			v.cashMultiplier = br.ReadSingle();
+			v.assetId = ModContent.CreatePrefabReference(br.ReadString());
+			v.lifespan = br.ReadSingle();
+			v.allowDoubleCash = br.ReadBoolean();
 		}
 	}
 	
@@ -909,6 +897,7 @@ public class AlchemistLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.rotateToTarget = br.ReadBoolean();
 			v.maxTurnAngle = br.ReadSingle();
 			v.positionAboveMoabTypes = br.ReadBoolean();
+			v.animCurve = (UnityEngine.AnimationCurve) m[br.ReadInt32()];
 		}
 	}
 	
@@ -1070,6 +1059,20 @@ public class AlchemistLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			var v = (Il2CppAssets.Scripts.Models.Towers.Filters.FilterOutTagModel)m[i+start];
 			v.tag = br.ReadBoolean() ? null : br.ReadString();
 			v.disableWhenSupportMutatorIDs = (Il2CppStringArray) m[br.ReadInt32()];
+		}
+	}
+	
+	private void Set_v_RemoveBloonTypeModifierModel_Fields(int start, int count) {
+		Set_v_ProjectileBehaviorModel_Fields(start, count);
+		var t = Il2CppType.Of<Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors.RemoveBloonTypeModifierModel>();
+		var lifespanField = t.GetField("lifespan", bindFlags);
+		for (var i=0; i<count; i++) {
+			var v = (Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors.RemoveBloonTypeModifierModel)m[i+start];
+			lifespanField.SetValue(v,br.ReadSingle().ToIl2Cpp());
+			v.layers = br.ReadInt32();
+			v.mutationId = br.ReadBoolean() ? null : br.ReadString();
+			v.removeAll = br.ReadBoolean();
+			v.bloonPropertiesToRemove = (BloonProperties) (br.ReadInt32());
 		}
 	}
 	
@@ -1431,6 +1434,13 @@ public class AlchemistLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 		}
 	}
 	
+	private void Set_v_DestroyProjectileIfTowerDestroyedModel_Fields(int start, int count) {
+		Set_v_ProjectileBehaviorModel_Fields(start, count);
+		for (var i=0; i<count; i++) {
+			var v = (Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors.DestroyProjectileIfTowerDestroyedModel)m[i+start];
+		}
+	}
+	
 	private void Set_v_RemovePermaBrewModel_Fields(int start, int count) {
 		Set_v_TowerBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -1496,12 +1506,11 @@ public class AlchemistLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors.AddBehaviorToBloonModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Bloons.Behaviors.DamageOverTimeModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors.DamageModifierForTagModel>();
-				Create_Records<Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors.IncreaseBloonWorthModel>();
-				Create_Records<Il2CppAssets.Scripts.Models.Towers.Filters.FilterWithTagModel>();
-				Create_Records<Il2CppAssets.Scripts.Models.Bloons.Behaviors.IncreaseWorthTextEffectModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors.RemoveBloonModifiersModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors.AcidPoolModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors.AgeModel>();
+				Create_Records<Il2CppAssets.Scripts.Models.Towers.Filters.FilterWithTagModel>();
+				Create_Records<Il2CppAssets.Scripts.Models.Bloons.Behaviors.GiveCashOnPopModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.GenericBehaviors.DisplayModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors.ScaleProjectileModel>();
 				Create_Records<Il2CppAssets.Scripts.Simulation.Towers.Projectiles.Behaviors.Curve>();
@@ -1522,6 +1531,7 @@ public class AlchemistLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors.DamageModifierUnstableConcoctionModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors.CollideExtraPierceReductionModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Filters.FilterOutTagModel>();
+				Create_Records<Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors.RemoveBloonTypeModifierModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors.CreateSoundOnProjectileExhaustModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors.MorphBloonModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Behaviors.Abilities.AbilityModel>();
@@ -1547,6 +1557,7 @@ public class AlchemistLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Behaviors.Attack.Behaviors.BrewTargettingModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors.CreateSoundOnProjectileExpireModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Behaviors.LoadAlchemistBrewInfoModel>();
+				Create_Records<Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors.DestroyProjectileIfTowerDestroyedModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Behaviors.RemovePermaBrewModel>();
 				
 				Set_v_TowerModel_Fields(br.ReadInt32(), br.ReadInt32());
@@ -1575,12 +1586,11 @@ public class AlchemistLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 				Set_v_AddBehaviorToBloonModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_DamageOverTimeModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_DamageModifierForTagModel_Fields(br.ReadInt32(), br.ReadInt32());
-				Set_v_IncreaseBloonWorthModel_Fields(br.ReadInt32(), br.ReadInt32());
-				Set_v_FilterWithTagModel_Fields(br.ReadInt32(), br.ReadInt32());
-				Set_v_IncreaseWorthTextEffectModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_RemoveBloonModifiersModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_AcidPoolModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_AgeModel_Fields(br.ReadInt32(), br.ReadInt32());
+				Set_v_FilterWithTagModel_Fields(br.ReadInt32(), br.ReadInt32());
+				Set_v_GiveCashOnPopModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_DisplayModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_ScaleProjectileModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_Curve_Fields(br.ReadInt32(), br.ReadInt32());
@@ -1601,6 +1611,7 @@ public class AlchemistLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 				Set_v_DamageModifierUnstableConcoctionModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_CollideExtraPierceReductionModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_FilterOutTagModel_Fields(br.ReadInt32(), br.ReadInt32());
+				Set_v_RemoveBloonTypeModifierModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_CreateSoundOnProjectileExhaustModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_MorphBloonModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_AbilityModel_Fields(br.ReadInt32(), br.ReadInt32());
@@ -1626,6 +1637,7 @@ public class AlchemistLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 				Set_v_BrewTargettingModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_CreateSoundOnProjectileExpireModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_LoadAlchemistBrewInfoModel_Fields(br.ReadInt32(), br.ReadInt32());
+				Set_v_DestroyProjectileIfTowerDestroyedModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_RemovePermaBrewModel_Fields(br.ReadInt32(), br.ReadInt32());
 				
 				//##  Step 4: link object collections e.g Product[]. Note: requires object data e.g dictionary<string, value> where string = model.name

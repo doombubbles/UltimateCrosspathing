@@ -331,6 +331,7 @@ public class BombShooterLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Tower
 		for (var i=0; i<count; i++) {
 			var v = (Il2CppAssets.Scripts.Models.Towers.Behaviors.CreateEffectOnPlaceModel)m[i+start];
 			v.effectModel = (Il2CppAssets.Scripts.Models.Effects.EffectModel) m[br.ReadInt32()];
+			v.createOnAirUnit = br.ReadBoolean();
 		}
 	}
 	
@@ -471,6 +472,7 @@ public class BombShooterLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Tower
 			v.startInCooldown = br.ReadBoolean();
 			customStartCooldownField.SetValue(v,br.ReadSingle().ToIl2Cpp());
 			v.animateOnMainAttack = br.ReadBoolean();
+			v.storeTargetOnAnimationStart = br.ReadBoolean();
 			v.isStunned = br.ReadBoolean();
 			v.modelName = br.ReadBoolean() ? null : br.ReadString();
 		}
@@ -567,6 +569,8 @@ public class BombShooterLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Tower
 			v.passOnCollidedWith = br.ReadBoolean();
 			v.dontCreateAtBloon = br.ReadBoolean();
 			v.passOnDirectionToContact = br.ReadBoolean();
+			v.useChance = br.ReadBoolean();
+			v.chance = br.ReadSingle();
 		}
 	}
 	
@@ -698,6 +702,16 @@ public class BombShooterLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Tower
 			v.minRange = br.ReadSingle();
 			v.maxRange = br.ReadSingle();
 			v.speed = br.ReadSingle();
+		}
+	}
+	
+	private void Set_v_CollideExtraPierceReductionModel_Fields(int start, int count) {
+		Set_v_ProjectileBehaviorModel_Fields(start, count);
+		for (var i=0; i<count; i++) {
+			var v = (Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors.CollideExtraPierceReductionModel)m[i+start];
+			v.bloonTag = br.ReadBoolean() ? null : br.ReadString();
+			v.extraAmount = br.ReadInt32();
+			v.destroyProjectileIfPierceNotEnough = br.ReadBoolean();
 		}
 	}
 	
@@ -1118,6 +1132,7 @@ public class BombShooterLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Tower
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors.CreateEffectOnExpireModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors.CreateEffectOnExhaustFractionModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors.RandomRangeTravelStraitModel>();
+				Create_Records<Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors.CollideExtraPierceReductionModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Behaviors.Emissions.ArcEmissionModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors.CreateEffectOnContactModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors.CreateSoundOnProjectileCollisionModel>();
@@ -1173,6 +1188,7 @@ public class BombShooterLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Tower
 				Set_v_Il2CppAssets_Scripts_Models_Towers_Projectiles_Behaviors_CreateEffectOnExpireModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_CreateEffectOnExhaustFractionModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_RandomRangeTravelStraitModel_Fields(br.ReadInt32(), br.ReadInt32());
+				Set_v_CollideExtraPierceReductionModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_ArcEmissionModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_CreateEffectOnContactModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_CreateSoundOnProjectileCollisionModel_Fields(br.ReadInt32(), br.ReadInt32());

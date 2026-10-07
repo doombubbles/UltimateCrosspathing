@@ -355,6 +355,7 @@ public class TechBotPrimeLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towe
 		for (var i=0; i<count; i++) {
 			var v = (Il2CppAssets.Scripts.Models.Towers.Behaviors.CreateEffectOnPlaceModel)m[i+start];
 			v.effectModel = (Il2CppAssets.Scripts.Models.Effects.EffectModel) m[br.ReadInt32()];
+			v.createOnAirUnit = br.ReadBoolean();
 		}
 	}
 	
@@ -714,7 +715,6 @@ public class TechBotPrimeLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towe
 			var v = (Il2CppAssets.Scripts.Models.Towers.Behaviors.Abilities.Behaviors.TechLinkActivateTowerDamageModel)m[i+start];
 			v.isUnique = br.ReadBoolean();
 			v.abilityDamageModifier = br.ReadSingle();
-			v.lifespan = br.ReadSingle();
 			v.mutatorPriority = br.ReadInt32();
 			v.displayPath = ModContent.CreatePrefabReference(br.ReadString());
 		}

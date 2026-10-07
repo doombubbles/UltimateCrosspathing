@@ -332,6 +332,7 @@ public class HeliPilotLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 		for (var i=0; i<count; i++) {
 			var v = (Il2CppAssets.Scripts.Models.Towers.Behaviors.CreateEffectOnPlaceModel)m[i+start];
 			v.effectModel = (Il2CppAssets.Scripts.Models.Effects.EffectModel) m[br.ReadInt32()];
+			v.createOnAirUnit = br.ReadBoolean();
 		}
 	}
 	
@@ -472,6 +473,7 @@ public class HeliPilotLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.startInCooldown = br.ReadBoolean();
 			customStartCooldownField.SetValue(v,br.ReadSingle().ToIl2Cpp());
 			v.animateOnMainAttack = br.ReadBoolean();
+			v.storeTargetOnAnimationStart = br.ReadBoolean();
 			v.isStunned = br.ReadBoolean();
 			v.modelName = br.ReadBoolean() ? null : br.ReadString();
 		}
@@ -745,6 +747,8 @@ public class HeliPilotLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.passOnCollidedWith = br.ReadBoolean();
 			v.dontCreateAtBloon = br.ReadBoolean();
 			v.passOnDirectionToContact = br.ReadBoolean();
+			v.useChance = br.ReadBoolean();
+			v.chance = br.ReadSingle();
 		}
 	}
 	
@@ -830,7 +834,16 @@ public class HeliPilotLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.moabPushSpeedScaleCap = br.ReadSingle();
 			v.bfbPushSpeedScaleCap = br.ReadSingle();
 			v.zomgPushSpeedScaleCap = br.ReadSingle();
-			v.filterInvisibleModel = (Il2CppAssets.Scripts.Models.Towers.Filters.FilterInvisibleModel) m[br.ReadInt32()];
+			v.filters = (Il2CppReferenceArray<Il2CppAssets.Scripts.Models.Towers.Filters.FilterModel>) m[br.ReadInt32()];
+		}
+	}
+	
+	private void Set_v_FilterOutTagModel_Fields(int start, int count) {
+		Set_v_FilterModel_Fields(start, count);
+		for (var i=0; i<count; i++) {
+			var v = (Il2CppAssets.Scripts.Models.Towers.Filters.FilterOutTagModel)m[i+start];
+			v.tag = br.ReadBoolean() ? null : br.ReadString();
+			v.disableWhenSupportMutatorIDs = (Il2CppStringArray) m[br.ReadInt32()];
 		}
 	}
 	
@@ -845,6 +858,7 @@ public class HeliPilotLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.selectableRadius = br.ReadSingle();
 			v.blocksPlacement = br.ReadBoolean();
 			v.blockingRadius = br.ReadSingle();
+			v.delayedReveal = br.ReadSingle();
 		}
 	}
 	
@@ -892,15 +906,6 @@ public class HeliPilotLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.mutationId = br.ReadBoolean() ? null : br.ReadString();
 			v.mutationIds = (Il2CppStringArray) m[br.ReadInt32()];
 			v.inverse = br.ReadBoolean();
-		}
-	}
-	
-	private void Set_v_FilterOutTagModel_Fields(int start, int count) {
-		Set_v_FilterModel_Fields(start, count);
-		for (var i=0; i<count; i++) {
-			var v = (Il2CppAssets.Scripts.Models.Towers.Filters.FilterOutTagModel)m[i+start];
-			v.tag = br.ReadBoolean() ? null : br.ReadString();
-			v.disableWhenSupportMutatorIDs = (Il2CppStringArray) m[br.ReadInt32()];
 		}
 	}
 	
@@ -1234,6 +1239,7 @@ public class HeliPilotLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 		for (var i=0; i<count; i++) {
 			var v = (Il2CppAssets.Scripts.Models.Towers.Behaviors.Abilities.Behaviors.ActivateAbilitiesOnAbilityModel)m[i+start];
 			v.abilityToFind = br.ReadBoolean() ? null : br.ReadString();
+			v.dontUseHighestTierAbilityIcon = br.ReadBoolean();
 		}
 	}
 	
@@ -1441,11 +1447,11 @@ public class HeliPilotLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors.CreateSoundOnProjectileCollisionModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Behaviors.Attack.Behaviors.TargetFirstAirUnitModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Behaviors.MoabShoveZoneModel>();
+				Create_Records<Il2CppAssets.Scripts.Models.Towers.Filters.FilterOutTagModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Behaviors.AirUnitModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Behaviors.HeliMovementModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Behaviors.CreateEffectOnAirUnitModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Filters.FilterMutatedTargetModel>();
-				Create_Records<Il2CppAssets.Scripts.Models.Towers.Filters.FilterOutTagModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors.WindModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors.RemoveMutatorsFromBloonModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors.CollideExtraPierceReductionModel>();
@@ -1527,11 +1533,11 @@ public class HeliPilotLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 				Set_v_CreateSoundOnProjectileCollisionModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_TargetFirstAirUnitModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_MoabShoveZoneModel_Fields(br.ReadInt32(), br.ReadInt32());
+				Set_v_FilterOutTagModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_AirUnitModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_HeliMovementModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_CreateEffectOnAirUnitModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_FilterMutatedTargetModel_Fields(br.ReadInt32(), br.ReadInt32());
-				Set_v_FilterOutTagModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_WindModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_RemoveMutatorsFromBloonModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_CollideExtraPierceReductionModel_Fields(br.ReadInt32(), br.ReadInt32());

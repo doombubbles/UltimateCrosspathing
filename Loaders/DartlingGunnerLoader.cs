@@ -365,6 +365,7 @@ public class DartlingGunnerLoader : ModByteLoader<Il2CppAssets.Scripts.Models.To
 		for (var i=0; i<count; i++) {
 			var v = (Il2CppAssets.Scripts.Models.Towers.Behaviors.CreateEffectOnPlaceModel)m[i+start];
 			v.effectModel = (Il2CppAssets.Scripts.Models.Effects.EffectModel) m[br.ReadInt32()];
+			v.createOnAirUnit = br.ReadBoolean();
 		}
 	}
 	
@@ -478,6 +479,7 @@ public class DartlingGunnerLoader : ModByteLoader<Il2CppAssets.Scripts.Models.To
 			v.startInCooldown = br.ReadBoolean();
 			customStartCooldownField.SetValue(v,br.ReadSingle().ToIl2Cpp());
 			v.animateOnMainAttack = br.ReadBoolean();
+			v.storeTargetOnAnimationStart = br.ReadBoolean();
 			v.isStunned = br.ReadBoolean();
 			v.modelName = br.ReadBoolean() ? null : br.ReadString();
 		}
@@ -991,6 +993,8 @@ public class DartlingGunnerLoader : ModByteLoader<Il2CppAssets.Scripts.Models.To
 			v.passOnCollidedWith = br.ReadBoolean();
 			v.dontCreateAtBloon = br.ReadBoolean();
 			v.passOnDirectionToContact = br.ReadBoolean();
+			v.useChance = br.ReadBoolean();
+			v.chance = br.ReadSingle();
 		}
 	}
 	
@@ -1148,6 +1152,8 @@ public class DartlingGunnerLoader : ModByteLoader<Il2CppAssets.Scripts.Models.To
 			v.ignoreBlockers = br.ReadBoolean();
 			v.useLineProjectileEmissionShowEffect = br.ReadBoolean();
 			v.effectDuration = br.ReadSingle();
+			v.pauseEffectOnAttackPaused = br.ReadBoolean();
+			v.dontUseTowerRotation = br.ReadBoolean();
 		}
 	}
 	

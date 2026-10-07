@@ -416,6 +416,7 @@ public class SuperMonkeyLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Tower
 		for (var i=0; i<count; i++) {
 			var v = (Il2CppAssets.Scripts.Models.Towers.Behaviors.CreateEffectOnPlaceModel)m[i+start];
 			v.effectModel = (Il2CppAssets.Scripts.Models.Effects.EffectModel) m[br.ReadInt32()];
+			v.createOnAirUnit = br.ReadBoolean();
 		}
 	}
 	
@@ -507,6 +508,7 @@ public class SuperMonkeyLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Tower
 			v.startInCooldown = br.ReadBoolean();
 			customStartCooldownField.SetValue(v,br.ReadSingle().ToIl2Cpp());
 			v.animateOnMainAttack = br.ReadBoolean();
+			v.storeTargetOnAnimationStart = br.ReadBoolean();
 			v.isStunned = br.ReadBoolean();
 			v.modelName = br.ReadBoolean() ? null : br.ReadString();
 		}
@@ -1031,7 +1033,7 @@ public class SuperMonkeyLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Tower
 			v.isGlobalRange = br.ReadBoolean();
 		}
 	}
-
+	
 	private void Set_v_CanBuffIndicatorModel_Fields(int start, int count) {
 		Set_v_TowerBehaviorBuffModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -1039,7 +1041,7 @@ public class SuperMonkeyLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Tower
 			v.isDisabled = br.ReadBoolean();
 		}
 	}
-
+	
 	private void Set_v_BuffIndicatorModel_Fields(int start, int count) {
 		Set_v_TowerBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -1053,7 +1055,7 @@ public class SuperMonkeyLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Tower
 			v.dontShowX = br.ReadBoolean();
 		}
 	}
-
+	
 	private void Set_v_RectangleFootprintModel_Fields(int start, int count) {
 		Set_v_FootprintModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -1335,6 +1337,8 @@ public class SuperMonkeyLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Tower
 			v.passOnCollidedWith = br.ReadBoolean();
 			v.dontCreateAtBloon = br.ReadBoolean();
 			v.passOnDirectionToContact = br.ReadBoolean();
+			v.useChance = br.ReadBoolean();
+			v.chance = br.ReadSingle();
 		}
 	}
 	
@@ -1475,6 +1479,7 @@ public class SuperMonkeyLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Tower
 			v.selectableRadius = br.ReadSingle();
 			v.blocksPlacement = br.ReadBoolean();
 			v.blockingRadius = br.ReadSingle();
+			v.delayedReveal = br.ReadSingle();
 		}
 	}
 	
@@ -1561,6 +1566,20 @@ public class SuperMonkeyLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Tower
 			v.keys = (Il2CppStringArray) m[br.ReadInt32()];
 			v.mutatorIds = br.ReadBoolean() ? null : br.ReadString();
 			v.mutatorIdList = (Il2CppStringArray) m[br.ReadInt32()];
+		}
+	}
+	
+	private void Set_v_RemoveBloonModifiersModel_Fields(int start, int count) {
+		Set_v_ProjectileBehaviorModel_Fields(start, count);
+		for (var i=0; i<count; i++) {
+			var v = (Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors.RemoveBloonModifiersModel)m[i+start];
+			v.cleanseRegen = br.ReadBoolean();
+			v.cleanseCamo = br.ReadBoolean();
+			v.cleanseLead = br.ReadBoolean();
+			v.cleanseFortified = br.ReadBoolean();
+			v.cleanseOnlyIfDamaged = br.ReadBoolean();
+			v.bloonTagExcludeList = (Il2CppStringArray) m[br.ReadInt32()];
+			v.bloonTagExplicitList = (Il2CppStringArray) m[br.ReadInt32()];
 		}
 	}
 	
@@ -1752,6 +1771,7 @@ public class SuperMonkeyLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Tower
 			v.mutatorId = br.ReadBoolean() ? null : br.ReadString();
 			v.isUnique = br.ReadBoolean();
 			v.maxStacks = br.ReadInt32();
+			v.excludeAddToSubtower = br.ReadBoolean();
 		}
 	}
 	
@@ -1910,6 +1930,7 @@ public class SuperMonkeyLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Tower
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Mutators.WindChanceTowerMutatorModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Filters.FilterOutTagModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors.RemoveMutatorsFromBloonModel>();
+				Create_Records<Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors.RemoveBloonModifiersModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors.CollideExtraPierceReductionModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Filters.FilterAllModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Behaviors.TowerExpireModel>();
@@ -2027,6 +2048,7 @@ public class SuperMonkeyLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Tower
 				Set_v_WindChanceTowerMutatorModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_FilterOutTagModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_RemoveMutatorsFromBloonModel_Fields(br.ReadInt32(), br.ReadInt32());
+				Set_v_RemoveBloonModifiersModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_CollideExtraPierceReductionModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_FilterAllModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_TowerExpireModel_Fields(br.ReadInt32(), br.ReadInt32());

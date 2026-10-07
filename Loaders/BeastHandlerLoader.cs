@@ -405,6 +405,7 @@ public class BeastHandlerLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towe
 		for (var i=0; i<count; i++) {
 			var v = (Il2CppAssets.Scripts.Models.Towers.Behaviors.CreateEffectOnPlaceModel)m[i+start];
 			v.effectModel = (Il2CppAssets.Scripts.Models.Effects.EffectModel) m[br.ReadInt32()];
+			v.createOnAirUnit = br.ReadBoolean();
 		}
 	}
 	
@@ -579,6 +580,7 @@ public class BeastHandlerLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towe
 			v.startInCooldown = br.ReadBoolean();
 			customStartCooldownField.SetValue(v,br.ReadSingle().ToIl2Cpp());
 			v.animateOnMainAttack = br.ReadBoolean();
+			v.storeTargetOnAnimationStart = br.ReadBoolean();
 			v.isStunned = br.ReadBoolean();
 			v.modelName = br.ReadBoolean() ? null : br.ReadString();
 		}
@@ -670,6 +672,8 @@ public class BeastHandlerLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towe
 			v.passOnCollidedWith = br.ReadBoolean();
 			v.dontCreateAtBloon = br.ReadBoolean();
 			v.passOnDirectionToContact = br.ReadBoolean();
+			v.useChance = br.ReadBoolean();
+			v.chance = br.ReadSingle();
 		}
 	}
 	
@@ -989,6 +993,7 @@ public class BeastHandlerLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towe
 			v.selectableRadius = br.ReadSingle();
 			v.blocksPlacement = br.ReadBoolean();
 			v.blockingRadius = br.ReadSingle();
+			v.delayedReveal = br.ReadSingle();
 		}
 	}
 	
@@ -1235,6 +1240,7 @@ public class BeastHandlerLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towe
 			v.rotateToTarget = br.ReadBoolean();
 			v.maxTurnAngle = br.ReadSingle();
 			v.positionAboveMoabTypes = br.ReadBoolean();
+			v.animCurve = (UnityEngine.AnimationCurve) m[br.ReadInt32()];
 		}
 	}
 	

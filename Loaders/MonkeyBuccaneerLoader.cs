@@ -413,6 +413,7 @@ public class MonkeyBuccaneerLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 		for (var i=0; i<count; i++) {
 			var v = (Il2CppAssets.Scripts.Models.Towers.Behaviors.CreateEffectOnPlaceModel)m[i+start];
 			v.effectModel = (Il2CppAssets.Scripts.Models.Effects.EffectModel) m[br.ReadInt32()];
+			v.createOnAirUnit = br.ReadBoolean();
 		}
 	}
 	
@@ -495,6 +496,7 @@ public class MonkeyBuccaneerLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 			v.startInCooldown = br.ReadBoolean();
 			customStartCooldownField.SetValue(v,br.ReadSingle().ToIl2Cpp());
 			v.animateOnMainAttack = br.ReadBoolean();
+			v.storeTargetOnAnimationStart = br.ReadBoolean();
 			v.isStunned = br.ReadBoolean();
 			v.modelName = br.ReadBoolean() ? null : br.ReadString();
 		}
@@ -793,6 +795,8 @@ public class MonkeyBuccaneerLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 			v.passOnCollidedWith = br.ReadBoolean();
 			v.dontCreateAtBloon = br.ReadBoolean();
 			v.passOnDirectionToContact = br.ReadBoolean();
+			v.useChance = br.ReadBoolean();
+			v.chance = br.ReadSingle();
 		}
 	}
 	
@@ -1483,6 +1487,7 @@ public class MonkeyBuccaneerLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 			v.selectableRadius = br.ReadSingle();
 			v.blocksPlacement = br.ReadBoolean();
 			v.blockingRadius = br.ReadSingle();
+			v.delayedReveal = br.ReadSingle();
 		}
 	}
 	

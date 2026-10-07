@@ -18,15 +18,15 @@ using Il2CppNinjaKiwi.Common;
 using Il2CppAssets.Scripts.Simulation.SMath;
 
 public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.TowerModel> {
-
-	private const BindingFlags bindFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static;
-
+	
+	private const BindingFlags bindFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static; 
+	
 	private BinaryReader br = null;
 	// NOTE: was a collection per type but it prevented inheritance e.g list of Products would required class type id
 	protected override string BytesFileName => "Skywardens.bytes";
 	private int mIndex = 1; // first element is null
 	#region Read array
-
+	
 	private void LinkArray<T>() where T : Il2CppObjectBase {
 		var setCount = br.ReadInt32();
 		for (var i = 0; i < setCount; i++) {
@@ -184,37 +184,37 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 		}
 	}
 	#endregion
-
+	
 	#region Read object records
-
+	
 	private void CreateArraySet<T>() where T : Il2CppObjectBase {
 		var arrCount = br.ReadInt32();
 		for(var i = 0; i < arrCount; i++) {
 			m[mIndex++] = new Il2CppReferenceArray<T>(br.ReadInt32());;
 		}
 	}
-
+	
 	private void CreateListSet<T>() where T : Il2CppObjectBase {
 		var arrCount = br.ReadInt32();
 		for (var i = 0; i < arrCount; i++) {
 			m[mIndex++] = new List<T>(br.ReadInt32()); // set capacity
 		}
 	}
-
+	
 	private void CreateDictionarySet<K, T>() {
 		var arrCount = br.ReadInt32();
 		for (var i = 0; i < arrCount; i++) {
 			m[mIndex++] = new Dictionary<K, T>(br.ReadInt32());// set capacity
 		}
 	}
-
+	
 	private void CreateSerializableDictionarySet<K, T>() {
 		var arrCount = br.ReadInt32();
 		for (var i = 0; i < arrCount; i++) {
 			m[mIndex++] = new SerializableDictionary<K, T>(br.ReadInt32());// set capacity
 		}
 	}
-
+	
 	private void Create_Records<T>() where T : Il2CppObjectBase {
 		var count = br.ReadInt32();
 		var t = Il2CppType.Of<T>();
@@ -223,9 +223,9 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 		}
 	}
 	#endregion
-
+	
 	#region Link object records
-
+	
 	private void Set_v_EntityModel_Fields(int start, int count) {
 		Set_v_Model_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -236,7 +236,7 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.radius = br.ReadSingle();
 		}
 	}
-
+	
 	private void Set_v_Model_Fields(int start, int count) {
 		var t = Il2CppType.Of<Il2CppAssets.Scripts.Models.Model>();
 		var runtimeTypeIndexField = t.GetField("runtimeTypeIndex", bindFlags);
@@ -251,7 +251,7 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			_nameField.SetValue(v,br.ReadBoolean() ? null : string.Intern(br.ReadString()));
 		}
 	}
-
+	
 	private void Set_v_TowerModel_Fields(int start, int count) {
 		Set_v_EntityModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -311,7 +311,7 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.frontierId = br.ReadInt32();
 		}
 	}
-
+	
 	private void Set_v_ApplyModModel_Fields(int start, int count) {
 		Set_v_Model_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -320,7 +320,7 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.target = br.ReadBoolean() ? null : br.ReadString();
 		}
 	}
-
+	
 	private void Set_v_FootprintModel_Fields(int start, int count) {
 		Set_v_TowerBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -330,21 +330,21 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.ignoresTowerOverlap = br.ReadBoolean();
 		}
 	}
-
+	
 	private void Set_v_TowerBehaviorModel_Fields(int start, int count) {
 		Set_v_EntityBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
 			var v = (Il2CppAssets.Scripts.Models.Towers.TowerBehaviorModel)m[i+start];
 		}
 	}
-
+	
 	private void Set_v_EntityBehaviorModel_Fields(int start, int count) {
 		Set_v_Model_Fields(start, count);
 		for (var i=0; i<count; i++) {
 			var v = (Il2CppAssets.Scripts.Models.EntityBehaviorModel)m[i+start];
 		}
 	}
-
+	
 	private void Set_v_CircleFootprintModel_Fields(int start, int count) {
 		Set_v_FootprintModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -352,7 +352,7 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.radius = br.ReadSingle();
 		}
 	}
-
+	
 	private void Set_v_UpgradePathModel_Fields(int start, int count) {
 		Set_v_Model_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -361,14 +361,14 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.upgrade = br.ReadBoolean() ? null : br.ReadString();
 		}
 	}
-
+	
 	private void Set_v_ZephyrSenseToggleModel_Fields(int start, int count) {
 		Set_v_TowerBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
 			var v = (Il2CppAssets.Scripts.Models.Towers.Behaviors.ZephyrSenseToggleModel)m[i+start];
 		}
 	}
-
+	
 	private void Set_v_ToggleFocusStanceModel_Fields(int start, int count) {
 		Set_v_TowerBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -380,17 +380,19 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.mutatorId = br.ReadBoolean() ? null : br.ReadString();
 			v.isUnique = br.ReadBoolean();
 			v.swapWeapon = br.ReadBoolean();
+			v.weaponSwapsIds = (Il2CppStringArray) m[br.ReadInt32()];
 		}
 	}
-
+	
 	private void Set_v_CreateEffectOnPlaceModel_Fields(int start, int count) {
 		Set_v_TowerBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
 			var v = (Il2CppAssets.Scripts.Models.Towers.Behaviors.CreateEffectOnPlaceModel)m[i+start];
 			v.effectModel = (Il2CppAssets.Scripts.Models.Effects.EffectModel) m[br.ReadInt32()];
+			v.createOnAirUnit = br.ReadBoolean();
 		}
 	}
-
+	
 	private void Set_v_EffectModel_Fields(int start, int count) {
 		Set_v_Model_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -407,7 +409,7 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.useRoundTime = br.ReadBoolean();
 		}
 	}
-
+	
 	private void Set_v_CreateSoundOnUpgradeModel_Fields(int start, int count) {
 		Set_v_TowerBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -423,7 +425,7 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.sound8 = (Il2CppAssets.Scripts.Models.Audio.SoundModel) m[br.ReadInt32()];
 		}
 	}
-
+	
 	private void Set_v_SoundModel_Fields(int start, int count) {
 		Set_v_Model_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -431,7 +433,7 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.assetId = ModContent.CreateAudioClipReference(br.ReadString());
 		}
 	}
-
+	
 	private void Set_v_CreateSoundOnSellModel_Fields(int start, int count) {
 		Set_v_TowerBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -439,7 +441,7 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.sound = (Il2CppAssets.Scripts.Models.Audio.SoundModel) m[br.ReadInt32()];
 		}
 	}
-
+	
 	private void Set_v_CreateEffectOnSellModel_Fields(int start, int count) {
 		Set_v_TowerBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -447,7 +449,7 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.effectModel = (Il2CppAssets.Scripts.Models.Effects.EffectModel) m[br.ReadInt32()];
 		}
 	}
-
+	
 	private void Set_v_CreateSoundOnTowerPlaceModel_Fields(int start, int count) {
 		Set_v_TowerBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -473,7 +475,7 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.reactDelay = br.ReadSingle();
 		}
 	}
-
+	
 	private void Set_v_CreateEffectOnUpgradeModel_Fields(int start, int count) {
 		Set_v_TowerBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -482,7 +484,7 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.createOnAirUnit = br.ReadBoolean();
 		}
 	}
-
+	
 	private void Set_v_AttackModel_Fields(int start, int count) {
 		Set_v_TowerBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -504,7 +506,7 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.fixedRange = br.ReadBoolean();
 		}
 	}
-
+	
 	private void Set_v_WeaponModel_Fields(int start, int count) {
 		Set_v_Model_Fields(start, count);
 		var t = Il2CppType.Of<Il2CppAssets.Scripts.Models.Towers.Weapons.WeaponModel>();
@@ -528,11 +530,12 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.startInCooldown = br.ReadBoolean();
 			customStartCooldownField.SetValue(v,br.ReadSingle().ToIl2Cpp());
 			v.animateOnMainAttack = br.ReadBoolean();
+			v.storeTargetOnAnimationStart = br.ReadBoolean();
 			v.isStunned = br.ReadBoolean();
 			v.modelName = br.ReadBoolean() ? null : br.ReadString();
 		}
 	}
-
+	
 	private void Set_v_RandomArcEmissionModel_Fields(int start, int count) {
 		Set_v_ArcEmissionModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -541,25 +544,7 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.startOffset = br.ReadSingle();
 		}
 	}
-
-	private void Set_v_EmissionBehaviorModel_Fields(int start, int count) {
-		Set_v_Model_Fields(start, count);
-		for (var i=0; i<count; i++) {
-			var v = (Il2CppAssets.Scripts.Models.Towers.Behaviors.Emissions.EmissionBehaviorModel)m[i+start];
-		}
-	}
-
-	private void Set_v_EmissionRotationOffProjectileDirectionModel_Fields(int start, int count) {
-		Set_v_EmissionBehaviorModel_Fields(start, count);
-		for (var i=0; i<count; i++) {
-			var v = (Il2CppAssets.Scripts.Models.Towers.Behaviors.Emissions.Behaviors.EmissionRotationOffProjectileDirectionModel)m[i+start];
-			v.startingOffset = br.ReadSingle();
-			v.angleInBetween = br.ReadSingle();
-			v.alwaysCentre = br.ReadBoolean();
-			v.useTransformRotation = br.ReadBoolean();
-		}
-	}
-
+	
 	private void Set_v_ProjectileModel_Fields(int start, int count) {
 		Set_v_Model_Fields(start, count);
 		var t = Il2CppType.Of<Il2CppAssets.Scripts.Models.Towers.Projectiles.ProjectileModel>();
@@ -590,14 +575,14 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.cantCreateSubProjectiles = br.ReadBoolean();
 		}
 	}
-
+	
 	private void Set_v_FilterModel_Fields(int start, int count) {
 		Set_v_Model_Fields(start, count);
 		for (var i=0; i<count; i++) {
 			var v = (Il2CppAssets.Scripts.Models.Towers.Filters.FilterModel)m[i+start];
 		}
 	}
-
+	
 	private void Set_v_FilterInvisibleModel_Fields(int start, int count) {
 		Set_v_FilterModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -606,7 +591,7 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.ignoreBroadPhase = br.ReadBoolean();
 		}
 	}
-
+	
 	private void Set_v_ProjectileBehaviorModel_Fields(int start, int count) {
 		Set_v_EntityBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -614,7 +599,7 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.collisionPass = br.ReadInt32();
 		}
 	}
-
+	
 	private void Set_v_ProjectileFilterModel_Fields(int start, int count) {
 		Set_v_ProjectileBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -622,14 +607,14 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.filters = (Il2CppReferenceArray<Il2CppAssets.Scripts.Models.Towers.Filters.FilterModel>) m[br.ReadInt32()];
 		}
 	}
-
+	
 	private void Set_v_DamageModifierModel_Fields(int start, int count) {
 		Set_v_ProjectileBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
 			var v = (Il2CppAssets.Scripts.Models.Towers.Projectiles.DamageModifierModel)m[i+start];
 		}
 	}
-
+	
 	private void Set_v_DamageImmunityBypassModel_Fields(int start, int count) {
 		Set_v_DamageModifierModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -637,7 +622,7 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.properties = br.ReadBoolean() ? null : br.ReadString();
 		}
 	}
-
+	
 	private void Set_v_ArriveAtTargetModel_Fields(int start, int count) {
 		Set_v_ProjectileBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -653,9 +638,10 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.rotateToTarget = br.ReadBoolean();
 			v.maxTurnAngle = br.ReadSingle();
 			v.positionAboveMoabTypes = br.ReadBoolean();
+			v.animCurve = (UnityEngine.AnimationCurve) m[br.ReadInt32()];
 		}
 	}
-
+	
 	private void Set_v_Curve_Fields(int start, int count) {
 		var t = Il2CppType.Of<Il2CppAssets.Scripts.Simulation.Towers.Projectiles.Behaviors.Curve>();
 		var samplesField = t.GetField("samples", bindFlags);
@@ -664,7 +650,7 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.samples = (Il2CppStructArray<float>) m[br.ReadInt32()];
 		}
 	}
-
+	
 	private void Set_v_CreateDistanceProjectileOnExhaustFractionModel_Fields(int start, int count) {
 		Set_v_ProjectileBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -681,7 +667,7 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.radiusPerInterval = br.ReadSingle();
 		}
 	}
-
+	
 	private void Set_v_DamageModel_Fields(int start, int count) {
 		Set_v_ProjectileBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -697,7 +683,7 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.ignoreDamageMultipliers = br.ReadBoolean();
 		}
 	}
-
+	
 	private void Set_v_AgeModel_Fields(int start, int count) {
 		Set_v_ProjectileBehaviorModel_Fields(start, count);
 		var t = Il2CppType.Of<Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors.AgeModel>();
@@ -710,7 +696,7 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.endOfRoundClearBypassModel = (Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors.EndOfRoundClearBypassModel) m[br.ReadInt32()];
 		}
 	}
-
+	
 	private void Set_v_DamageModifierForBloonStateAndTypeModel_Fields(int start, int count) {
 		Set_v_DamageModifierModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -725,7 +711,7 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.includeChildren = br.ReadBoolean();
 		}
 	}
-
+	
 	private void Set_v_DamageModifierForBloonStateModel_Fields(int start, int count) {
 		Set_v_DamageModifierModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -739,7 +725,7 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.mustBeModified = br.ReadBoolean();
 		}
 	}
-
+	
 	private void Set_v_CollideReducePierceForBloonStateModel_Fields(int start, int count) {
 		Set_v_ProjectileBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -751,7 +737,7 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.percentChanceOfPierceReduce = br.ReadSingle();
 		}
 	}
-
+	
 	private void Set_v_ProjectileBehaviorWithOverlayModel_Fields(int start, int count) {
 		Set_v_ProjectileBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -759,7 +745,7 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.overlayType = br.ReadBoolean() ? null : br.ReadString();
 		}
 	}
-
+	
 	private void Set_v_GalvanizedModel_Fields(int start, int count) {
 		Set_v_ProjectileBehaviorWithOverlayModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -780,7 +766,7 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.effect = (Il2CppAssets.Scripts.Models.Effects.EffectModel) m[br.ReadInt32()];
 		}
 	}
-
+	
 	private void Set_v_CreateLightningEffectModel_Fields(int start, int count) {
 		Set_v_ProjectileBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -790,7 +776,7 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.displayLengths = (Il2CppStructArray<float>) m[br.ReadInt32()];
 		}
 	}
-
+	
 	private void Set_v_LightningModel_Fields(int start, int count) {
 		Set_v_ProjectileBehaviorModel_Fields(start, count);
 		var t = Il2CppType.Of<Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors.LightningModel>();
@@ -804,7 +790,7 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.targetLast = br.ReadBoolean();
 		}
 	}
-
+	
 	private void Set_v_EmissionModel_Fields(int start, int count) {
 		Set_v_Model_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -812,14 +798,14 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.behaviors = (Il2CppReferenceArray<Il2CppAssets.Scripts.Models.Towers.Behaviors.Emissions.EmissionBehaviorModel>) m[br.ReadInt32()];
 		}
 	}
-
+	
 	private void Set_v_SingleEmissionModel_Fields(int start, int count) {
 		Set_v_EmissionModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
 			var v = (Il2CppAssets.Scripts.Models.Towers.Behaviors.Emissions.SingleEmissionModel)m[i+start];
 		}
 	}
-
+	
 	private void Set_v_BloonTagDamageOverrideModel_Fields(int start, int count) {
 		Set_v_ProjectileBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -830,7 +816,7 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.includeChildren = br.ReadBoolean();
 		}
 	}
-
+	
 	private void Set_v_DisplayModel_Fields(int start, int count) {
 		Set_v_Model_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -846,7 +832,7 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.isAnimationPaused = br.ReadBoolean();
 		}
 	}
-
+	
 	private void Set_v_DamageModifierForTagModel_Fields(int start, int count) {
 		Set_v_DamageModifierModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -860,7 +846,7 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.ignoreTag = br.ReadBoolean();
 		}
 	}
-
+	
 	private void Set_v_ChilledModel_Fields(int start, int count) {
 		Set_v_ProjectileBehaviorWithOverlayModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -874,6 +860,8 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.affectMoab = br.ReadBoolean();
 			v.moabStageOneSlowMod = br.ReadSingle();
 			v.moabStageTwoSlowMod = br.ReadSingle();
+			v.shrapnelRange = br.ReadSingle();
+			v.shrapnelCount = br.ReadInt32();
 			v.projectile = (Il2CppAssets.Scripts.Models.Towers.Projectiles.ProjectileModel) m[br.ReadInt32()];
 			v.emission = (Il2CppAssets.Scripts.Models.Towers.Behaviors.Emissions.EmissionModel) m[br.ReadInt32()];
 			v.effect = (Il2CppAssets.Scripts.Models.Effects.EffectModel) m[br.ReadInt32()];
@@ -882,7 +870,7 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.pierceEffect = (Il2CppAssets.Scripts.Models.Effects.EffectModel) m[br.ReadInt32()];
 		}
 	}
-
+	
 	private void Set_v_TravelStraitModel_Fields(int start, int count) {
 		Set_v_ProjectileBehaviorModel_Fields(start, count);
 		var t = Il2CppType.Of<Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors.TravelStraitModel>();
@@ -894,7 +882,7 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			lifespanField.SetValue(v,br.ReadSingle().ToIl2Cpp());
 		}
 	}
-
+	
 	private void Set_v_FreezeModel_Fields(int start, int count) {
 		Set_v_ProjectileBehaviorWithOverlayModel_Fields(start, count);
 		var t = Il2CppType.Of<Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors.FreezeModel>();
@@ -908,41 +896,36 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.enablePercentChanceToFreeze = br.ReadBoolean();
 			v.damageModel = (Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors.DamageModel) m[br.ReadInt32()];
 			v.canFreezeMoabs = br.ReadBoolean();
+			v.bossImmunity = br.ReadBoolean();
 			v.cascadeMutators = br.ReadBoolean();
 			v.growBlockModel = (Il2CppAssets.Scripts.Models.Bloons.Behaviors.GrowBlockModel) m[br.ReadInt32()];
 			v.applyAfterDamage = br.ReadBoolean();
 			lifespanField.SetValue(v,br.ReadSingle().ToIl2Cpp());
 		}
 	}
-
+	
 	private void Set_v_BloonBehaviorModel_Fields(int start, int count) {
 		Set_v_Model_Fields(start, count);
 		for (var i=0; i<count; i++) {
 			var v = (Il2CppAssets.Scripts.Models.Bloons.BloonBehaviorModel)m[i+start];
 		}
 	}
-
+	
 	private void Set_v_GrowBlockModel_Fields(int start, int count) {
 		Set_v_BloonBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
 			var v = (Il2CppAssets.Scripts.Models.Bloons.Behaviors.GrowBlockModel)m[i+start];
 		}
 	}
-
-	private void Set_v_ArcEmissionModel_Fields(int start, int count) {
-		Set_v_EmissionModel_Fields(start, count);
-		var t = Il2CppType.Of<Il2CppAssets.Scripts.Models.Towers.Behaviors.Emissions.ArcEmissionModel>();
-		var CountField = t.GetField("Count", bindFlags);
+	
+	private void Set_v_AddHeatToBloonModel_Fields(int start, int count) {
+		Set_v_ProjectileBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
-			var v = (Il2CppAssets.Scripts.Models.Towers.Behaviors.Emissions.ArcEmissionModel)m[i+start];
-			v.angle = br.ReadSingle();
-			v.offset = br.ReadSingle();
-			v.useProjectileRotation = br.ReadBoolean();
-			v.useAirUnitRotation = br.ReadBoolean();
-			CountField.SetValue(v,br.ReadInt32().ToIl2Cpp());
+			var v = (Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors.AddHeatToBloonModel)m[i+start];
+			v.heatAmount = br.ReadSingle();
 		}
 	}
-
+	
 	private void Set_v_CreateEffectOnExhaustFractionModel_Fields(int start, int count) {
 		Set_v_ProjectileBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -955,14 +938,14 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.effectModel = (Il2CppAssets.Scripts.Models.Effects.EffectModel) m[br.ReadInt32()];
 		}
 	}
-
+	
 	private void Set_v_AttackBehaviorModel_Fields(int start, int count) {
 		Set_v_EntityBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
 			var v = (Il2CppAssets.Scripts.Models.Towers.Behaviors.Attack.AttackBehaviorModel)m[i+start];
 		}
 	}
-
+	
 	private void Set_v_RotateToTargetModel_Fields(int start, int count) {
 		Set_v_AttackBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -975,7 +958,7 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.useMainAttackRotation = br.ReadBoolean();
 		}
 	}
-
+	
 	private void Set_v_AttackFilterModel_Fields(int start, int count) {
 		Set_v_AttackBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -983,14 +966,14 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.filters = (Il2CppReferenceArray<Il2CppAssets.Scripts.Models.Towers.Filters.FilterModel>) m[br.ReadInt32()];
 		}
 	}
-
+	
 	private void Set_v_TargetCamoModel_Fields(int start, int count) {
 		Set_v_TargetSupplierModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
 			var v = (Il2CppAssets.Scripts.Models.Towers.Behaviors.Attack.Behaviors.TargetCamoModel)m[i+start];
 		}
 	}
-
+	
 	private void Set_v_TargetSupplierModel_Fields(int start, int count) {
 		Set_v_AttackBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -998,7 +981,7 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.isOnSubTower = br.ReadBoolean();
 		}
 	}
-
+	
 	private void Set_v_TargetFirstPrioCamoModel_Fields(int start, int count) {
 		Set_v_TargetCamoModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -1006,7 +989,7 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.isSelectable = br.ReadBoolean();
 		}
 	}
-
+	
 	private void Set_v_TargetLastPrioCamoModel_Fields(int start, int count) {
 		Set_v_TargetCamoModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -1014,7 +997,7 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.isSelectable = br.ReadBoolean();
 		}
 	}
-
+	
 	private void Set_v_TargetClosePrioCamoModel_Fields(int start, int count) {
 		Set_v_TargetCamoModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -1022,15 +1005,7 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.isSelectable = br.ReadBoolean();
 		}
 	}
-
-	private void Set_v_TargetStrongPrioCamoModel_Fields(int start, int count) {
-		Set_v_TargetCamoModel_Fields(start, count);
-		for (var i=0; i<count; i++) {
-			var v = (Il2CppAssets.Scripts.Models.Towers.Behaviors.Attack.Behaviors.TargetStrongPrioCamoModel)m[i+start];
-			v.isSelectable = br.ReadBoolean();
-		}
-	}
-
+	
 	private void Set_v_TargetSelectedPointModel_Fields(int start, int count) {
 		Set_v_TargetSupplierModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -1047,7 +1022,15 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.useTerrainHeight = br.ReadBoolean();
 		}
 	}
-
+	
+	private void Set_v_TargetStrongPrioCamoModel_Fields(int start, int count) {
+		Set_v_TargetCamoModel_Fields(start, count);
+		for (var i=0; i<count; i++) {
+			var v = (Il2CppAssets.Scripts.Models.Towers.Behaviors.Attack.Behaviors.TargetStrongPrioCamoModel)m[i+start];
+			v.isSelectable = br.ReadBoolean();
+		}
+	}
+	
 	private void Set_v_DamageBasedAttackSpeedModel_Fields(int start, int count) {
 		Set_v_TowerBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -1059,7 +1042,7 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.damageCap = br.ReadSingle();
 		}
 	}
-
+	
 	private void Set_v_StatePoppedBasedPierceModel_Fields(int start, int count) {
 		Set_v_TowerBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -1072,7 +1055,7 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.mustBeModified = br.ReadBoolean();
 		}
 	}
-
+	
 	private void Set_v_EmitOnDamageWithStateModel_Fields(int start, int count) {
 		Set_v_ProjectileBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -1087,7 +1070,7 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.includeChildren = br.ReadBoolean();
 		}
 	}
-
+	
 	private void Set_v_AgeRandomModel_Fields(int start, int count) {
 		Set_v_AgeModel_Fields(start, count);
 		var t = Il2CppType.Of<Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors.AgeRandomModel>();
@@ -1099,7 +1082,7 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			maxLifespanField.SetValue(v,br.ReadSingle().ToIl2Cpp());
 		}
 	}
-
+	
 	private void Set_v_SlowModel_Fields(int start, int count) {
 		Set_v_ProjectileBehaviorWithOverlayModel_Fields(start, count);
 		var t = Il2CppType.Of<Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors.SlowModel>();
@@ -1124,7 +1107,7 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.dontRemoveOnBloonDegrade = br.ReadBoolean();
 		}
 	}
-
+	
 	private void Set_v_CreateProjectileOnExhaustFractionModel_Fields(int start, int count) {
 		Set_v_ProjectileBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -1138,7 +1121,7 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.passOnCollidedWith = br.ReadBoolean();
 		}
 	}
-
+	
 	private void Set_v_EmissionAtClosestPathSegmentModel_Fields(int start, int count) {
 		Set_v_EmissionModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -1147,7 +1130,7 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.spacing = br.ReadSingle();
 		}
 	}
-
+	
 	private void Set_v_WintersMercyTowerBuffModel_Fields(int start, int count) {
 		Set_v_TowerBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -1158,14 +1141,14 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.destroyFrozenBuffDuration = br.ReadSingle();
 		}
 	}
-
+	
 	private void Set_v_ProjectileBehaviorWithBloonTrackingModel_Fields(int start, int count) {
 		Set_v_ProjectileBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
 			var v = (Il2CppAssets.Scripts.Models.Towers.Projectiles.ProjectileBehaviorWithBloonTrackingModel)m[i+start];
 		}
 	}
-
+	
 	private void Set_v_FrozenRemainsExplosionModel_Fields(int start, int count) {
 		Set_v_ProjectileBehaviorWithBloonTrackingModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -1179,7 +1162,7 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.passOnCollidedWith = br.ReadBoolean();
 		}
 	}
-
+	
 	private void Set_v_AbilityModel_Fields(int start, int count) {
 		Set_v_TowerBehaviorModel_Fields(start, count);
 		var t = Il2CppType.Of<Il2CppAssets.Scripts.Models.Towers.Behaviors.Abilities.AbilityModel>();
@@ -1220,7 +1203,7 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			cooldownField.SetValue(v,br.ReadSingle().ToIl2Cpp());
 		}
 	}
-
+	
 	private void Set_v_AbilityBehaviorBuffModel_Fields(int start, int count) {
 		Set_v_AbilityBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -1231,14 +1214,14 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.buffIconName = br.ReadBoolean() ? null : br.ReadString();
 		}
 	}
-
+	
 	private void Set_v_AbilityBehaviorModel_Fields(int start, int count) {
 		Set_v_EntityBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
 			var v = (Il2CppAssets.Scripts.Models.Towers.Behaviors.Abilities.AbilityBehaviorModel)m[i+start];
 		}
 	}
-
+	
 	private void Set_v_ActivateProjectileSpeedSupportZoneModel_Fields(int start, int count) {
 		Set_v_AbilityBehaviorBuffModel_Fields(start, count);
 		var t = Il2CppType.Of<Il2CppAssets.Scripts.Models.Towers.Behaviors.Abilities.Behaviors.ActivateProjectileSpeedSupportZoneModel>();
@@ -1258,7 +1241,7 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.oneShotInRange = br.ReadBoolean();
 		}
 	}
-
+	
 	private void Set_v_ActivateRicochetSupportZoneModel_Fields(int start, int count) {
 		Set_v_AbilityBehaviorBuffModel_Fields(start, count);
 		var t = Il2CppType.Of<Il2CppAssets.Scripts.Models.Towers.Behaviors.Abilities.Behaviors.ActivateRicochetSupportZoneModel>();
@@ -1282,7 +1265,7 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.expireIfNoTargetFound = br.ReadBoolean();
 		}
 	}
-
+	
 	private void Set_v_ActivateDamageBypassSupportZoneModel_Fields(int start, int count) {
 		Set_v_AbilityBehaviorBuffModel_Fields(start, count);
 		var t = Il2CppType.Of<Il2CppAssets.Scripts.Models.Towers.Behaviors.Abilities.Behaviors.ActivateDamageBypassSupportZoneModel>();
@@ -1301,7 +1284,7 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.properties = br.ReadBoolean() ? null : br.ReadString();
 		}
 	}
-
+	
 	private void Set_v_CreateSoundOnAbilityModel_Fields(int start, int count) {
 		Set_v_AbilityBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -1311,7 +1294,7 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.heroSound2 = (Il2CppAssets.Scripts.Models.Audio.SoundModel) m[br.ReadInt32()];
 		}
 	}
-
+	
 	private void Set_v_CreateEffectOnAbilityModel_Fields(int start, int count) {
 		Set_v_AbilityBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -1324,7 +1307,7 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.canSave = br.ReadBoolean();
 		}
 	}
-
+	
 	private void Set_v_LightningRodManagerModel_Fields(int start, int count) {
 		Set_v_TowerBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -1332,7 +1315,7 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.damageTypesToZap = (Il2CppStringArray) m[br.ReadInt32()];
 		}
 	}
-
+	
 	private void Set_v_PointLineEffectModel_Fields(int start, int count) {
 		Set_v_TowerBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -1344,7 +1327,7 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.effectDuration = br.ReadSingle();
 		}
 	}
-
+	
 	private void Set_v_AssetPathModel_Fields(int start, int count) {
 		Set_v_Model_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -1352,7 +1335,14 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.assetPath = ModContent.CreatePrefabReference(br.ReadString());
 		}
 	}
-
+	
+	private void Set_v_EmissionBehaviorModel_Fields(int start, int count) {
+		Set_v_Model_Fields(start, count);
+		for (var i=0; i<count; i++) {
+			var v = (Il2CppAssets.Scripts.Models.Towers.Behaviors.Emissions.EmissionBehaviorModel)m[i+start];
+		}
+	}
+	
 	private void Set_v_EmissionArcRotationOffTowerDirectionModel_Fields(int start, int count) {
 		Set_v_EmissionBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -1360,7 +1350,7 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.offsetRotation = br.ReadInt32();
 		}
 	}
-
+	
 	private void Set_v_LightningRodEmitModel_Fields(int start, int count) {
 		Set_v_ProjectileBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -1371,7 +1361,7 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.minEmitDistance = br.ReadSingle();
 		}
 	}
-
+	
 	private void Set_v_LightningRodModel_Fields(int start, int count) {
 		Set_v_ProjectileBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -1384,7 +1374,7 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.emission = (Il2CppAssets.Scripts.Models.Towers.Behaviors.Emissions.EmissionModel) m[br.ReadInt32()];
 		}
 	}
-
+	
 	private void Set_v_ActivateLightningRodZapModel_Fields(int start, int count) {
 		Set_v_AbilityBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -1398,7 +1388,7 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.lineEmission = (Il2CppAssets.Scripts.Models.Towers.Behaviors.Emissions.EmissionModel) m[br.ReadInt32()];
 		}
 	}
-
+	
 	private void Set_v_LineProjectileEmissionModel_Fields(int start, int count) {
 		Set_v_EmissionModel_Fields(start, count);
 		var t = Il2CppType.Of<Il2CppAssets.Scripts.Models.Towers.Behaviors.Emissions.LineProjectileEmissionModel>();
@@ -1428,7 +1418,7 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.emitFromTargetLength = br.ReadSingle();
 		}
 	}
-
+	
 	private void Set_v_TravelStraitSlowdownModel_Fields(int start, int count) {
 		Set_v_TravelStraitModel_Fields(start, count);
 		var t = Il2CppType.Of<Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors.TravelStraitSlowdownModel>();
@@ -1444,7 +1434,7 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.endPierce = br.ReadInt32();
 		}
 	}
-
+	
 	private void Set_v_TrackTargetModel_Fields(int start, int count) {
 		Set_v_ProjectileBehaviorModel_Fields(start, count);
 		var t = Il2CppType.Of<Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors.TrackTargetModel>();
@@ -1462,7 +1452,7 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			turnRateField.SetValue(v,br.ReadSingle().ToIl2Cpp());
 		}
 	}
-
+	
 	private void Set_v_SupportModel_Fields(int start, int count) {
 		Set_v_TowerBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -1480,7 +1470,7 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.onlyAffectParagon = br.ReadBoolean();
 		}
 	}
-
+	
 	private void Set_v_RangeSupportModel_Fields(int start, int count) {
 		Set_v_SupportModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -1490,9 +1480,26 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.mutatorId = br.ReadBoolean() ? null : br.ReadString();
 			v.isUnique = br.ReadBoolean();
 			v.maxStacks = br.ReadInt32();
+			v.excludeAddToSubtower = br.ReadBoolean();
 		}
 	}
-
+	
+	private void Set_v_TowerFilterModel_Fields(int start, int count) {
+		Set_v_Model_Fields(start, count);
+		for (var i=0; i<count; i++) {
+			var v = (Il2CppAssets.Scripts.Models.Towers.TowerFilters.TowerFilterModel)m[i+start];
+		}
+	}
+	
+	private void Set_v_FilterHighestTowerTierModel_Fields(int start, int count) {
+		Set_v_TowerFilterModel_Fields(start, count);
+		for (var i=0; i<count; i++) {
+			var v = (Il2CppAssets.Scripts.Models.Towers.TowerFilters.FilterHighestTowerTierModel)m[i+start];
+			v.minTier = br.ReadInt32();
+			v.maxTier = br.ReadInt32();
+		}
+	}
+	
 	private void Set_v_BuffIndicatorModel_Fields(int start, int count) {
 		Set_v_TowerBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -1506,7 +1513,18 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.dontShowX = br.ReadBoolean();
 		}
 	}
-
+	
+	private void Set_v_EmissionRotationOffProjectileDirectionModel_Fields(int start, int count) {
+		Set_v_EmissionBehaviorModel_Fields(start, count);
+		for (var i=0; i<count; i++) {
+			var v = (Il2CppAssets.Scripts.Models.Towers.Behaviors.Emissions.Behaviors.EmissionRotationOffProjectileDirectionModel)m[i+start];
+			v.startingOffset = br.ReadSingle();
+			v.angleInBetween = br.ReadSingle();
+			v.alwaysCentre = br.ReadBoolean();
+			v.useTransformRotation = br.ReadBoolean();
+		}
+	}
+	
 	private void Set_v_WindlashModel_Fields(int start, int count) {
 		Set_v_ProjectileBehaviorWithOverlayModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -1527,7 +1545,21 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.overlayStageThree = br.ReadBoolean() ? null : br.ReadString();
 		}
 	}
-
+	
+	private void Set_v_ArcEmissionModel_Fields(int start, int count) {
+		Set_v_EmissionModel_Fields(start, count);
+		var t = Il2CppType.Of<Il2CppAssets.Scripts.Models.Towers.Behaviors.Emissions.ArcEmissionModel>();
+		var CountField = t.GetField("Count", bindFlags);
+		for (var i=0; i<count; i++) {
+			var v = (Il2CppAssets.Scripts.Models.Towers.Behaviors.Emissions.ArcEmissionModel)m[i+start];
+			v.angle = br.ReadSingle();
+			v.offset = br.ReadSingle();
+			v.useProjectileRotation = br.ReadBoolean();
+			v.useAirUnitRotation = br.ReadBoolean();
+			CountField.SetValue(v,br.ReadInt32().ToIl2Cpp());
+		}
+	}
+	
 	private void Set_v_WindModel_Fields(int start, int count) {
 		Set_v_ProjectileBehaviorWithOverlayModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -1544,7 +1576,7 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.tagInclusive = br.ReadBoolean();
 		}
 	}
-
+	
 	private void Set_v_TravelAlongPathModel_Fields(int start, int count) {
 		Set_v_ProjectileBehaviorModel_Fields(start, count);
 		var t = Il2CppType.Of<Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors.TravelAlongPathModel>();
@@ -1559,14 +1591,14 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.rotationLerp = br.ReadSingle();
 		}
 	}
-
+	
 	private void Set_v_WeaponBehaviorModel_Fields(int start, int count) {
 		Set_v_EntityBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
 			var v = (Il2CppAssets.Scripts.Models.Towers.Weapons.WeaponBehaviorModel)m[i+start];
 		}
 	}
-
+	
 	private void Set_v_BurstWeaponIncreasingArcBehaviorModel_Fields(int start, int count) {
 		Set_v_WeaponBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -1578,7 +1610,7 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.angleIncreases = (List<System.Single>) m[br.ReadInt32()];
 		}
 	}
-
+	
 	private void Set_v_TowerBehaviorWithOverlayModel_Fields(int start, int count) {
 		Set_v_TowerBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -1586,7 +1618,7 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.overlayType = br.ReadBoolean() ? null : br.ReadString();
 		}
 	}
-
+	
 	private void Set_v_CamoBlockZoneModel_Fields(int start, int count) {
 		Set_v_TowerBehaviorWithOverlayModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -1597,7 +1629,7 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.isDisabled = br.ReadBoolean();
 		}
 	}
-
+	
 	private void Set_v_TowerRangeDamageBuffModel_Fields(int start, int count) {
 		Set_v_TowerBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -1608,16 +1640,16 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.damageCap = br.ReadSingle();
 		}
 	}
-
+	
 	#endregion
-
+	
 	protected override Il2CppAssets.Scripts.Models.Towers.TowerModel Load(byte[] bytes) {
 		using (var s = new MemoryStream(bytes)) {
 			using (var reader = new BinaryReader(s)) {
 				this.br = reader;
 				var totalCount = br.ReadInt32();
 				m = new object[totalCount];
-
+				
 				//##  Step 1: create empty collections
 				Read_a_AreaType_Array();
 				CreateArraySet<Il2CppAssets.Scripts.Models.Model>();
@@ -1627,13 +1659,14 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 				Read_a_String_Array();
 				Read_a_TargetType_Array();
 				CreateArraySet<Il2CppAssets.Scripts.Models.Towers.Weapons.WeaponModel>();
-				CreateArraySet<Il2CppAssets.Scripts.Models.Towers.Behaviors.Emissions.EmissionBehaviorModel>();
 				CreateArraySet<Il2CppAssets.Scripts.Models.Towers.Filters.FilterModel>();
 				Read_a_Single_Array();
 				Read_a_PrefabReference_Array();
+				CreateArraySet<Il2CppAssets.Scripts.Models.Towers.Behaviors.Emissions.EmissionBehaviorModel>();
+				CreateArraySet<Il2CppAssets.Scripts.Models.Towers.TowerFilters.TowerFilterModel>();
 				CreateListSet<Il2CppAssets.Scripts.Models.Model>();
 				Read_l_Single_List();
-
+				
 				//##  Step 2: create empty objects
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.TowerModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Mods.ApplyModModel>();
@@ -1652,7 +1685,6 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Behaviors.Attack.AttackModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Weapons.WeaponModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Behaviors.Emissions.RandomArcEmissionModel>();
-				Create_Records<Il2CppAssets.Scripts.Models.Towers.Behaviors.Emissions.Behaviors.EmissionRotationOffProjectileDirectionModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Projectiles.ProjectileModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Filters.FilterInvisibleModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors.ProjectileFilterModel>();
@@ -1676,15 +1708,15 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors.TravelStraitModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors.FreezeModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Bloons.Behaviors.GrowBlockModel>();
-				Create_Records<Il2CppAssets.Scripts.Models.Towers.Behaviors.Emissions.ArcEmissionModel>();
+				Create_Records<Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors.AddHeatToBloonModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors.CreateEffectOnExhaustFractionModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Behaviors.Attack.Behaviors.RotateToTargetModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Behaviors.Attack.Behaviors.AttackFilterModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Behaviors.Attack.Behaviors.TargetFirstPrioCamoModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Behaviors.Attack.Behaviors.TargetLastPrioCamoModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Behaviors.Attack.Behaviors.TargetClosePrioCamoModel>();
-				Create_Records<Il2CppAssets.Scripts.Models.Towers.Behaviors.Attack.Behaviors.TargetStrongPrioCamoModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Behaviors.Attack.Behaviors.TargetSelectedPointModel>();
+				Create_Records<Il2CppAssets.Scripts.Models.Towers.Behaviors.Attack.Behaviors.TargetStrongPrioCamoModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Behaviors.DamageBasedAttackSpeedModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Behaviors.StatePoppedBasedPierceModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors.EmitOnDamageWithStateModel>();
@@ -1711,14 +1743,17 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors.TravelStraitSlowdownModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors.TrackTargetModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Behaviors.RangeSupportModel>();
+				Create_Records<Il2CppAssets.Scripts.Models.Towers.TowerFilters.FilterHighestTowerTierModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.GenericBehaviors.BuffIndicatorModel>();
+				Create_Records<Il2CppAssets.Scripts.Models.Towers.Behaviors.Emissions.Behaviors.EmissionRotationOffProjectileDirectionModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors.WindlashModel>();
+				Create_Records<Il2CppAssets.Scripts.Models.Towers.Behaviors.Emissions.ArcEmissionModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors.WindModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors.TravelAlongPathModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Weapons.Behaviors.BurstWeaponIncreasingArcBehaviorModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Behaviors.CamoBlockZoneModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Behaviors.TowerRangeDamageBuffModel>();
-
+				
 				Set_v_TowerModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_ApplyModModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_CircleFootprintModel_Fields(br.ReadInt32(), br.ReadInt32());
@@ -1736,7 +1771,6 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 				Set_v_AttackModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_WeaponModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_RandomArcEmissionModel_Fields(br.ReadInt32(), br.ReadInt32());
-				Set_v_EmissionRotationOffProjectileDirectionModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_ProjectileModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_FilterInvisibleModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_ProjectileFilterModel_Fields(br.ReadInt32(), br.ReadInt32());
@@ -1760,15 +1794,15 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 				Set_v_TravelStraitModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_FreezeModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_GrowBlockModel_Fields(br.ReadInt32(), br.ReadInt32());
-				Set_v_ArcEmissionModel_Fields(br.ReadInt32(), br.ReadInt32());
+				Set_v_AddHeatToBloonModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_CreateEffectOnExhaustFractionModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_RotateToTargetModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_AttackFilterModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_TargetFirstPrioCamoModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_TargetLastPrioCamoModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_TargetClosePrioCamoModel_Fields(br.ReadInt32(), br.ReadInt32());
-				Set_v_TargetStrongPrioCamoModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_TargetSelectedPointModel_Fields(br.ReadInt32(), br.ReadInt32());
+				Set_v_TargetStrongPrioCamoModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_DamageBasedAttackSpeedModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_StatePoppedBasedPierceModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_EmitOnDamageWithStateModel_Fields(br.ReadInt32(), br.ReadInt32());
@@ -1795,23 +1829,27 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 				Set_v_TravelStraitSlowdownModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_TrackTargetModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_RangeSupportModel_Fields(br.ReadInt32(), br.ReadInt32());
+				Set_v_FilterHighestTowerTierModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_BuffIndicatorModel_Fields(br.ReadInt32(), br.ReadInt32());
+				Set_v_EmissionRotationOffProjectileDirectionModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_WindlashModel_Fields(br.ReadInt32(), br.ReadInt32());
+				Set_v_ArcEmissionModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_WindModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_TravelAlongPathModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_BurstWeaponIncreasingArcBehaviorModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_CamoBlockZoneModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_TowerRangeDamageBuffModel_Fields(br.ReadInt32(), br.ReadInt32());
-
+				
 				//##  Step 4: link object collections e.g Product[]. Note: requires object data e.g dictionary<string, value> where string = model.name
 				LinkArray<Il2CppAssets.Scripts.Models.Model>();
 				LinkArray<Il2CppAssets.Scripts.Models.Towers.Mods.ApplyModModel>();
 				LinkArray<Il2CppAssets.Scripts.Models.Towers.Upgrades.UpgradePathModel>();
 				LinkArray<Il2CppAssets.Scripts.Models.Towers.Weapons.WeaponModel>();
-				LinkArray<Il2CppAssets.Scripts.Models.Towers.Behaviors.Emissions.EmissionBehaviorModel>();
 				LinkArray<Il2CppAssets.Scripts.Models.Towers.Filters.FilterModel>();
+				LinkArray<Il2CppAssets.Scripts.Models.Towers.Behaviors.Emissions.EmissionBehaviorModel>();
+				LinkArray<Il2CppAssets.Scripts.Models.Towers.TowerFilters.TowerFilterModel>();
 				LinkList<Il2CppAssets.Scripts.Models.Model>();
-
+				
 				var resIndex = br.ReadInt32();
 				UnityEngine.Debug.Assert(br.BaseStream.Position == br.BaseStream.Length);
 				return (Il2CppAssets.Scripts.Models.Towers.TowerModel) m[resIndex];
