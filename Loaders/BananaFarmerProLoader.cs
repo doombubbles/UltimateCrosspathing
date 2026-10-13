@@ -653,6 +653,7 @@ public class BananaFarmerProLoader : ModByteLoader<Il2CppAssets.Scripts.Models.T
 			v.delayedReveal = br.ReadSingle();
 			v.category = (Il2CppAssets.Scripts.Models.GenericBehaviors.DisplayCategory) (br.ReadUInt16());
 			v.isAnimationPaused = br.ReadBoolean();
+			v.lockDisplayDelayModification = br.ReadBoolean();
 		}
 	}
 	

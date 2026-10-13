@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.8.5] - 2026-10-13
+
+- Updated for BTD6 v57.1
+
 ## [1.8.4] - 2026-10-06
 
 - Updated for BTD6 v57
@@ -221,7 +225,8 @@ KNOWN ISSUES:
 - Switch to slider from 7 to 15 for crosspathing instead of the execute order 66 toggle
 - Using a new custom load step for smoother startup
 
-[unreleased]: https://github.com/doombubbles/UltimateCrosspathing/compare/1.8.4...HEAD
+[unreleased]: https://github.com/doombubbles/UltimateCrosspathing/compare/1.8.5...HEAD
+[1.8.5]: https://github.com/doombubbles/UltimateCrosspathing/compare/1.8.4...1.8.5
 [1.8.4]: https://github.com/doombubbles/UltimateCrosspathing/compare/1.8.3...1.8.4
 [1.8.3]: https://github.com/doombubbles/UltimateCrosspathing/compare/1.8.2...1.8.3
 

@@ -830,6 +830,7 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			v.delayedReveal = br.ReadSingle();
 			v.category = (Il2CppAssets.Scripts.Models.GenericBehaviors.DisplayCategory) (br.ReadUInt16());
 			v.isAnimationPaused = br.ReadBoolean();
+			v.lockDisplayDelayModification = br.ReadBoolean();
 		}
 	}
 	
@@ -1497,6 +1498,7 @@ public class SkywardenLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towers.
 			var v = (Il2CppAssets.Scripts.Models.Towers.TowerFilters.FilterHighestTowerTierModel)m[i+start];
 			v.minTier = br.ReadInt32();
 			v.maxTier = br.ReadInt32();
+			v.applyFilterToHeroLevel = br.ReadBoolean();
 		}
 	}
 	

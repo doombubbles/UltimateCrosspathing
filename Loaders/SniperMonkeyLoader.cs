@@ -659,6 +659,7 @@ public class SniperMonkeyLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towe
 			v.delayedReveal = br.ReadSingle();
 			v.category = (Il2CppAssets.Scripts.Models.GenericBehaviors.DisplayCategory) (br.ReadUInt16());
 			v.isAnimationPaused = br.ReadBoolean();
+			v.lockDisplayDelayModification = br.ReadBoolean();
 		}
 	}
 	
@@ -1084,6 +1085,7 @@ public class SniperMonkeyLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towe
 			v.buffIconName = br.ReadBoolean() ? null : br.ReadString();
 			v.mainMonkeyAbilityEffect = (Il2CppAssets.Scripts.Models.Effects.EffectModel) m[br.ReadInt32()];
 			v.secondaryMonkeyAbilityEffect = (Il2CppAssets.Scripts.Models.Effects.EffectModel) m[br.ReadInt32()];
+			v.isParagon = br.ReadBoolean();
 		}
 	}
 	
