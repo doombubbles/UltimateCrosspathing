@@ -1096,6 +1096,19 @@ public class SniperMonkeyLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towe
 		}
 	}
 	
+	private void Set_v_Il2CppAssets_Scripts_Models_Towers_Projectiles_Behaviors_CreateEffectOnExpireModel_Fields(int start, int count) {
+		Set_v_ProjectileBehaviorModel_Fields(start, count);
+		for (var i=0; i<count; i++) {
+			var v = (Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors.CreateEffectOnExpireModel)m[i+start];
+			v.assetId = ModContent.CreatePrefabReference(br.ReadString());
+			v.lifespan = br.ReadSingle();
+			v.fullscreen = (Il2CppAssets.Scripts.Models.Effects.Fullscreen) (br.ReadInt32());
+			v.randomRotation = br.ReadBoolean();
+			v.effectModel = (Il2CppAssets.Scripts.Models.Effects.EffectModel) m[br.ReadInt32()];
+			v.useTargetPosition = br.ReadBoolean();
+		}
+	}
+	
 	private void Set_v_SwitchTargetSupplierOnUpgradeModel_Fields(int start, int count) {
 		Set_v_TowerBehaviorModel_Fields(start, count);
 		for (var i=0; i<count; i++) {
@@ -1294,6 +1307,7 @@ public class SniperMonkeyLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towe
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Behaviors.Abilities.Behaviors.ToggleableAbilityBehaviorModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Behaviors.Abilities.Behaviors.SniperAmmoSwapBehaviorModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Behaviors.SniperAmmoSwapTowerBehaviorModel>();
+				Create_Records<Il2CppAssets.Scripts.Models.Towers.Projectiles.Behaviors.CreateEffectOnExpireModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Behaviors.SwitchTargetSupplierOnUpgradeModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Behaviors.Attack.Behaviors.TargetEliteTargettingModel>();
 				Create_Records<Il2CppAssets.Scripts.Models.Towers.Behaviors.TargetSupplierSupportModel>();
@@ -1360,6 +1374,7 @@ public class SniperMonkeyLoader : ModByteLoader<Il2CppAssets.Scripts.Models.Towe
 				Set_v_ToggleableAbilityBehaviorModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_SniperAmmoSwapBehaviorModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_SniperAmmoSwapTowerBehaviorModel_Fields(br.ReadInt32(), br.ReadInt32());
+				Set_v_Il2CppAssets_Scripts_Models_Towers_Projectiles_Behaviors_CreateEffectOnExpireModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_SwitchTargetSupplierOnUpgradeModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_TargetEliteTargettingModel_Fields(br.ReadInt32(), br.ReadInt32());
 				Set_v_TargetSupplierSupportModel_Fields(br.ReadInt32(), br.ReadInt32());
