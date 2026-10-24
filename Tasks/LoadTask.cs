@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Il2CppAssets.Scripts.Models.Towers;
 using Il2CppAssets.Scripts.Unity;
 using BTD_Mod_Helper.Extensions;
+using UnityEngine.Scripting;
 
 namespace UltimateCrosspathing.Tasks;
 
@@ -15,6 +16,19 @@ public class Loading : ModLoadTask
     public override bool ShowProgressBar => true;
 
     public override IEnumerator Coroutine()
+    {
+        try
+        {
+            var loading = LoadTowers();
+            while (loading.MoveNext()) yield return loading.Current;
+        }
+        finally
+        {
+            GarbageCollector.GCMode = GarbageCollector.Mode.Enabled;
+        }
+    }
+
+    private IEnumerator LoadTowers()
     {
         var loadInfos = GetContent<LoadInfo>().Where(info => info.Enabled).ToList();
 
